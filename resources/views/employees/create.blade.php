@@ -3,11 +3,6 @@
 @section('title', 'Tambah Karyawan')
 
 @section('content')
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Tambah Karyawan</li>
-    </ol>
   </nav>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -26,7 +21,6 @@
                                 </ul>
                             </div>
                         @endif
-
                         <form action="{{ route('employees.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
@@ -53,16 +47,18 @@
                                 <label for="cell" class="form-label">Cell</label>
                                 <input type="text" class="form-control" name="cell" id="cell" required>
                             </div>
-                            <div>
+                            <div class="form-group">
                                 <label for="phone" class="form-label">No. Handphone</label>
                                 <input type="tel" class="form-control" name="phone" id="phone" required>
                             </div>
-                            <label for="datein">Date IN:</label>
-                            <input type="date" name="datein" id="datein" required>
-                            <br>
-                            <label for="status">Status:</label>
-                            <input type="text" name="status" id="status" required>
-                            <br>
+                            <div class="form-group">
+                                <label for="datein" class="form-label">Tanggal Masuk</label>
+                                <input type="date" class="form-control" name="datein" id="datein" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="status" class="form-label">Status</label>
+                                <input type="text" class="form-control" name="status" id="status" required>
+                            </div>
                             <button type="submit">Simpan</button>
                         </form>
                     </div>

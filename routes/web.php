@@ -16,10 +16,13 @@ Route::post('/employees', [EmployeeController::class, 'store'])->name('employees
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
 // Route untuk menampilkan form edit karyawan
-Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
 
 // Route untuk mengupdate data karyawan
 Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
 
 // Route untuk menghapus data karyawan
-Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+
+//untuk export data karyawan
+Route::get('/employees/export', [EmployeeController::class, 'export'])->name('employees.export');

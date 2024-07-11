@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeesExport;
 
 class EmployeeController extends Controller
 {
@@ -41,8 +43,9 @@ class EmployeeController extends Controller
         return view('employees.show', compact('employee'));
     }
 
-    public function edit(Employee $employee)
+    public function edit($id)
     {
+        $employee = Employee::findOrFail($id);
         return view('employees.edit', compact('employee'));
     }
 
@@ -63,9 +66,18 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index');
     }
 
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
+        $employee = Employee::findOrFail($id);
         $employee->delete();
-        return redirect()->route('employees.index');
+    
+        return redirect()->route('employees.index')->with('success', 'Karyawan berhasil dihapus.');
     }
+
+    public function export()
+    {
+        return Excel::download(new EmployeesExport, 'employees.xlsx');
+    }
+
+    
 }
