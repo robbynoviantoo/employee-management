@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeesExport;
+use App\Imports\EmployeesImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
+use App\Models\Employee;
 
 class EmployeeController extends Controller
 {
@@ -76,8 +77,23 @@ class EmployeeController extends Controller
 
     public function export()
     {
-        return Excel::download(new EmployeesExport, 'employees.xlsx');
+        $filename = "Employees.xlsx";
+        return Excel::download(new EmployeesExport, $filename);
     }
 
-    
+    public function showImportForm()
+    {
+        return view('employees.import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
+
+        Excel::import(new EmployeesImport, $request->file('file'));
+
+        return redirect()->route('employees.importForm')->with('success', 'Data Karyawan Berhasil Diimport');
+    }
 }

@@ -24,5 +24,8 @@ Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name
 // Route untuk menghapus data karyawan
 Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 
-//untuk export data karyawan
-Route::get('/employees/export', [EmployeeController::class, 'export'])->name('employees.export');
+Route::get('/export', [EmployeeController::class, 'export'])->name('employees.export');
+
+Route::get('/employees/import', [EmployeeController::class, 'showImportForm'])->name('employees.importForm');
+
+Route::post('/employees/import', [EmployeeController::class, 'import'])->name('employees.import');

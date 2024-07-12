@@ -9,6 +9,22 @@
     <div class="mb-3">
         <a href="{{ route('employees.export') }}" class="btn btn-success">Export to Excel</a>
     </div>
+    <div class="container mt-5">
+        <h2>Import Karyawan</h2>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        <form action="{{ route('employees.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="file">Pilih File Excel</label>
+                <input type="file" name="file" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Import</button>
+        </form>
+    </div>
 
     <table id="employees-table" class="table table-striped table-bordered" style="width:100%">
         <thead>
