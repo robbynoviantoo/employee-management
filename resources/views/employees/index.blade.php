@@ -55,8 +55,8 @@
                     @endforeach
                 </select>
             </div>
-            <div>
-                <a href="{{ route('import.form') }}" class="btn btn-warning mr-2">Import from Excel</a>
+            <div class="d-flex flex-column flex-md-row">
+                <a href="{{ route('import.form') }}" class="btn btn-warning mb-2 mb-md-0 mr-md-2">Import from Excel</a>
                 <a href="{{ route('employees.export') }}" class="btn btn-success">Export to Excel</a>
             </div>
         </div>
