@@ -15,8 +15,9 @@ class EmployeeController extends Controller
         $employeeCount = $employees->count();
         $activeEmployeeCount = Employee::where('status', 'On Work')->count();
         $resignedEmployeeCount = Employee::where('status', 'Resigned')->count();
+        $positions = Employee::select('position')->distinct()->pluck('position');
 
-        return view('employees.index', compact('employees', 'employeeCount', 'activeEmployeeCount', 'resignedEmployeeCount'));
+        return view('employees.index', compact('employees', 'employeeCount', 'activeEmployeeCount', 'resignedEmployeeCount', 'positions'));
     }
 
     public function create()

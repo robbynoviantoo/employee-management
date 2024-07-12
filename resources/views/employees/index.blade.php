@@ -44,11 +44,21 @@
             </div>
         </div>
 
-        <h1>LIST KARYAWAN</h1>
+        <h1 class="mb-4">LIST KARYAWAN</h1>
 
-        <div class="d-flex justify-content-end mb-3">
-            <a href="{{ route('import.form') }}" class="btn btn-warning mr-2">Import from Excel</a>
-            <a href="{{ route('employees.export') }}" class="btn btn-success">Export to Excel</a>
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+                <select id="position-filter" class="form-control w-auto">
+                    <option value="">Filter Jabatan</option>
+                    @foreach ($positions as $position)
+                        <option value="{{ $position }}">{{ $position }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <a href="{{ route('import.form') }}" class="btn btn-warning mr-2">Import from Excel</a>
+                <a href="{{ route('employees.export') }}" class="btn btn-success">Export to Excel</a>
+            </div>
         </div>
 
         <div class="table-responsive">
@@ -131,6 +141,21 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
+
+            // Filter jabatan
+            function filterByPosition() {
+                var selectedPosition = $('#position-filter').val();
+                console.log("Selected Position: ", selectedPosition); // Debugging log
+                table.column(3).search(selectedPosition).draw();
+            }
+
+            // Apply filter on page load
+            filterByPosition();
+
+            // Apply filter on change
+            $('#position-filter').on('change', function() {
+                filterByPosition();
+            });
         });
     </script>
 @endsection
