@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EmployeesExport;
-use App\Imports\EmployeesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Employee;
@@ -13,7 +12,11 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return view('employees.index', compact('employees'));
+        $employeeCount = $employees->count();
+        $activeEmployeeCount = Employee::where('status', 'On Work')->count();
+        $resignedEmployeeCount = Employee::where('status', 'Resigned')->count();
+
+        return view('employees.index', compact('employees', 'employeeCount', 'activeEmployeeCount', 'resignedEmployeeCount'));
     }
 
     public function create()
@@ -25,7 +28,7 @@ class EmployeeController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'photo' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'position' => 'required',
             'building' => 'required',
             'area' => 'required',
@@ -35,12 +38,22 @@ class EmployeeController extends Controller
             'status' => 'required',
         ]);
 
-        Employee::create($validatedData);
+        $employee = new Employee($request->all());
+
+        if ($request->hasFile('photo')) {
+            $imageName = time().'.'.$request->photo->extension();
+            $request->photo->move(public_path('images'), $imageName);
+            $employee->photo = $imageName;
+        }
+
+        $employee->save();
+
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    public function show(Employee $employee)
+    public function show($id)
     {
+        $employee = Employee::findOrFail($id);
         return view('employees.show', compact('employee'));
     }
 
@@ -54,7 +67,7 @@ class EmployeeController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'photo' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'position' => 'required',
             'building' => 'required',
             'area' => 'required',
@@ -79,21 +92,5 @@ class EmployeeController extends Controller
     {
         $filename = "Employees.xlsx";
         return Excel::download(new EmployeesExport, $filename);
-    }
-
-    public function showImportForm()
-    {
-        return view('employees.import');
-    }
-
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
-
-        Excel::import(new EmployeesImport, $request->file('file'));
-
-        return redirect()->route('employees.importForm')->with('success', 'Data Karyawan Berhasil Diimport');
     }
 }

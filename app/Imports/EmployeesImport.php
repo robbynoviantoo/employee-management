@@ -3,42 +3,23 @@
 namespace App\Imports;
 
 use App\Models\Employee;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
 
-class EmployeesImport implements ToCollection, WithHeadingRow, WithValidation
+class EmployeesImport implements ToModel, WithHeadingRow
 {
-    public function collection(Collection $rows)
+    public function model(array $row)
     {
-        foreach ($rows as $row) {
-            Employee::create([
-                'name' => $row['name'],
-                'photo' => $row['photo'],
-                'position' => $row['position'],
-                'building' => $row['building'],
-                'area' => $row['area'],
-                'cell' => $row['cell'],
-                'phone' => $row['phone'],
-                'datein' => \Carbon\Carbon::createFromFormat('Y-m-d', $row['datein']),
-                'status' => $row['status'],
-            ]);
-        }
-    }
-
-    public function rules(): array
-    {
-        return [
-            '*.name' => ['required', 'string'],
-            '*.photo' => ['required', 'string'],
-            '*.position' => ['required', 'string'],
-            '*.building' => ['required', 'string'],
-            '*.area' => ['required', 'string'],
-            '*.cell' => ['required', 'string'],
-            '*.phone' => ['required', 'string'],
-            '*.datein' => ['required', 'date_format:Y-m-d'],
-            '*.status' => ['required', 'string'],
-        ];
+        return new Employee([
+            'name' => $row['name'],
+            'photo' => $row['photo'],
+            'position' => $row['position'],
+            'building' => $row['building'],
+            'area' => $row['area'],
+            'cell' => $row['cell'],
+            'phone' => $row['phone'],
+            'datein' => $row['datein'],
+            'status' => $row['status'],
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ImportController;
 
 // Route untuk menampilkan daftar karyawan
 Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
@@ -13,7 +14,7 @@ Route::get('/employees/create', [EmployeeController::class, 'create'])->name('em
 Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
 
 // Route untuk menampilkan detail karyawan
-Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+Route::get('/employees/{id}', [EmployeeController::class, 'show'])->name('employees.show');
 
 // Route untuk menampilkan form edit karyawan
 Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
@@ -26,6 +27,6 @@ Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('
 
 Route::get('/export', [EmployeeController::class, 'export'])->name('employees.export');
 
-Route::get('/employees/import', [EmployeeController::class, 'showImportForm'])->name('employees.importForm');
+Route::get('/import-form', [ImportController::class, 'showImportForm'])->name('import.form');
 
-Route::post('/employees/import', [EmployeeController::class, 'import'])->name('employees.import');
+Route::post('/import', [ImportController::class, 'import'])->name('import.process');
