@@ -9,9 +9,15 @@ use App\Models\Employee;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::all();
+        $query = Employee::query();
+
+        if ($request->has('position') && $request->position != '') {
+            $query->where('position', $request->position);
+        }
+
+        $employees = $query->get();
         $employeeCount = $employees->count();
         $activeEmployeeCount = Employee::where('status', 'On Work')->count();
         $resignedEmployeeCount = Employee::where('status', 'Resigned')->count();
@@ -93,5 +99,22 @@ class EmployeeController extends Controller
     {
         $filename = "Employees.xlsx";
         return Excel::download(new EmployeesExport, $filename);
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Employee::query();
+
+        if ($request->has('position') && $request->position != '') {
+            $query->where('position', $request->position);
+        }
+
+        $employees = $query->get();
+        $employeeCount = Employee::count();
+        $activeEmployeeCount = Employee::where('status', 'On Work')->count();
+        $resignedEmployeeCount = Employee::where('status', 'Resigned')->count();
+        $positions = Employee::select('position')->distinct()->pluck('position');
+
+        return view('employees.index', compact('employees', 'employeeCount', 'activeEmployeeCount', 'resignedEmployeeCount', 'positions'));
     }
 }

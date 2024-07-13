@@ -25,8 +25,14 @@ Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name
 // Route untuk menghapus data karyawan
 Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 
+// Route untuk mengekspor data karyawan
 Route::get('/export', [EmployeeController::class, 'export'])->name('employees.export');
 
+// Route untuk menampilkan form impor
 Route::get('/import-form', [ImportController::class, 'showImportForm'])->name('import.form');
 
+// Route untuk memproses impor data
 Route::post('/import', [ImportController::class, 'import'])->name('import.process');
+
+// Route untuk menampilkan karyawan berdasarkan jabatan yang difilter
+Route::get('/employees/', [EmployeeController::class, 'filter'])->name('employees.filter');
