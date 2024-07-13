@@ -49,9 +49,9 @@
     <div class="d-flex justify-content-between mb-3">
         <form action="{{ route('employees.filter') }}" method="GET" class="d-flex">
             <select id="position-filter" name="position" class="form-control w-auto mr-2">
-                <option value="">Filter Jabatan</option>
+                <option value="all">All Jabatan</option>
                 @foreach ($positions as $position)
-                    <option value="{{ $position }}">{{ $position }}</option>
+                    <option value="{{ $position }}" {{ old('position', $currentPosition) == $position ? 'selected' : '' }}>{{ $position }}</option>
                 @endforeach
             </select>
             <button type="submit" class="btn btn-primary">Apply Filter</button>

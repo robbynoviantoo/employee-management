@@ -11,19 +11,24 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
+        $currentPosition = $request->input('position', 'all');
         $query = Employee::query();
-
-        if ($request->has('position') && $request->position != '') {
-            $query->where('position', $request->position);
+    
+        if ($currentPosition && $currentPosition !== 'all') {
+            $query->where('position', $currentPosition);
         }
-
+    
         $employees = $query->get();
-        $employeeCount = $employees->count();
-        $activeEmployeeCount = Employee::where('status', 'On Work')->count();
-        $resignedEmployeeCount = Employee::where('status', 'Resigned')->count();
-        $positions = Employee::select('position')->distinct()->pluck('position');
-
-        return view('employees.index', compact('employees', 'employeeCount', 'activeEmployeeCount', 'resignedEmployeeCount', 'positions'));
+        $positions = Employee::select('position')->distinct()->get()->pluck('position');
+    
+        return view('employees.index', [
+            'employees' => $employees,
+            'positions' => $positions,
+            'currentPosition' => $currentPosition,
+            'employeeCount' => Employee::count(),
+            'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
+            'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count()
+        ]);
     }
 
     public function create()
@@ -103,18 +108,23 @@ class EmployeeController extends Controller
 
     public function filter(Request $request)
     {
+        $currentPosition = $request->input('position', 'all');
         $query = Employee::query();
-
-        if ($request->has('position') && $request->position != '') {
-            $query->where('position', $request->position);
+    
+        if ($currentPosition && $currentPosition !== 'all') {
+            $query->where('position', $currentPosition);
         }
-
+    
         $employees = $query->get();
-        $employeeCount = Employee::count();
-        $activeEmployeeCount = Employee::where('status', 'On Work')->count();
-        $resignedEmployeeCount = Employee::where('status', 'Resigned')->count();
-        $positions = Employee::select('position')->distinct()->pluck('position');
-
-        return view('employees.index', compact('employees', 'employeeCount', 'activeEmployeeCount', 'resignedEmployeeCount', 'positions'));
+        $positions = Employee::select('position')->distinct()->get()->pluck('position');
+    
+        return view('employees.index', [
+            'employees' => $employees,
+            'positions' => $positions,
+            'currentPosition' => $currentPosition,
+            'employeeCount' => Employee::count(),
+            'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
+            'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count()
+        ]);
     }
 }
