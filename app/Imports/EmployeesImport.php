@@ -5,9 +5,23 @@ namespace App\Imports;
 use App\Models\Employee;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Illuminate\Support\Collection;
 
-class EmployeesImport implements ToModel, WithHeadingRow
+class EmployeesImport implements ToModel, WithHeadingRow, ToCollection
 {
+    private $data;
+
+    public function collection(Collection $rows)
+    {
+        $this->data = $rows;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
     public function model(array $row)
     {
         // Konversi nilai Excel date ke format tanggal yang benar
