@@ -4,15 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MonthlyEmployeeData;
+use App\Models\Employee;
+use Carbon\Carbon;
 
 class MonthlyEmployeeDataController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $monthlyData = MonthlyEmployeeData::orderBy('year', 'asc')
-                                          ->orderBy('month', 'asc')
-                                          ->get();
-        return view('monthly_employee_data.index', compact('monthlyData'));
+        $years = MonthlyEmployeeData::selectRaw('DISTINCT year')->pluck('year');
+        $query = MonthlyEmployeeData::query();
+
+        if ($request->has('year') && $request->year != '') {
+            $query->where('year', $request->year);
+        }
+
+        if ($request->has('month') && $request->month != '') {
+            $query->where('month', $request->month);
+        }
+
+        $monthlyData = $query->orderBy('year')->orderBy('month')->get();
+
+        return view('monthly_employee_data.index', [
+            'years' => $years,
+            'monthlyData' => $monthlyData
+        ]);
     }
 
     public function store(Request $request)
@@ -20,9 +35,13 @@ class MonthlyEmployeeDataController extends Controller
         $validatedData = $request->validate([
             'year' => 'required|integer',
             'month' => 'required|integer',
-            'total_employees' => 'required|integer',
+            'active_employees' => 'required|integer',
             'resigned_employees' => 'required|integer',
         ]);
+
+        // Hitung total karyawan
+        $totalEmployees = $validatedData['active_employees'] + $validatedData['resigned_employees'];
+        $validatedData['total_employees'] = $totalEmployees;
 
         MonthlyEmployeeData::create($validatedData);
 

@@ -18,6 +18,7 @@ class MonthlyEmployeeData extends Model
         'year',
         'month',
         'total_employees',
+        'active_employees',
         'resigned_employees',
     ];
 }

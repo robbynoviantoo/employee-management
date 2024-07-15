@@ -39,7 +39,7 @@ Route::post('/import', [ImportController::class, 'import'])->name('import.proces
 Route::get('/employees/', [EmployeeController::class, 'filter'])->name('employees.filter');
 
 // Route untuk mengakses halaman data karyawan bulanan
-Route::resource('monthly_employee_data', MonthlyEmployeeDataController::class);
+Route::get('/monthly_employee_data', [MonthlyEmployeeDataController::class, 'index'])->name('monthly_employee_data.index');
 
 // Rute untuk halaman view resign bulanan
 Route::get('/resign-monthly', [EmployeeController::class, 'resignMonthly'])->name('employees.resignMonthly');

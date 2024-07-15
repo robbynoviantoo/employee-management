@@ -14,30 +14,27 @@ class EmployeeController extends Controller
     {
         $currentPosition = $request->input('position', 'all');
         $query = Employee::query();
-    
+
         if ($currentPosition && $currentPosition !== 'all') {
             $query->where('position', $currentPosition);
         }
-    
+
         $employees = $query->get();
         $positions = Employee::select('position')->distinct()->get()->pluck('position');
-        
+
         // Menghitung persentase karyawan resign tiap bulan
         $resignedPercentages = [];
         for ($month = 1; $month <= 12; $month++) {
-            $activeEmployeesAtStartOfMonth = Employee::where('status', 'On Work')
-                                                     ->where(function($query) use ($month) {
-                                                         $query->whereYear('datein', '<=', now()->year)
-                                                               ->whereMonth('datein', '<=', $month);
-                                                     })
-                                                     ->count();
+            $totalEmployeesThisMonth = Employee::whereYear('datein', '<=', now()->year)
+                ->whereMonth('datein', '<=', $month)
+                ->count();
 
             $resignedEmployeesThisMonth = Employee::where('status', 'Resigned')
-                                                  ->whereYear('dateout', now()->year)
-                                                  ->whereMonth('dateout', $month)
-                                                  ->count();
+                ->whereYear('dateout', now()->year)
+                ->whereMonth('dateout', $month)
+                ->count();
 
-            $resignedPercentage = $activeEmployeesAtStartOfMonth > 0 ? ($resignedEmployeesThisMonth / $activeEmployeesAtStartOfMonth) * 100 : 0;
+            $resignedPercentage = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisMonth / $totalEmployeesThisMonth) * 100 : 0;
             $resignedPercentages[$month] = $resignedPercentage;
         }
 
@@ -45,25 +42,18 @@ class EmployeeController extends Controller
         $currentMonth = now()->month;
         $currentYear = now()->year;
 
-        $activeEmployeesAtStartOfCurrentMonth = Employee::where('status', 'On Work')
-                                                        ->where(function($query) use ($currentYear, $currentMonth) {
-                                                            $query->where(function($query) use ($currentYear, $currentMonth) {
-                                                                $query->whereYear('datein', '<', $currentYear)
-                                                                      ->orWhere(function($query) use ($currentYear, $currentMonth) {
-                                                                          $query->whereYear('datein', '=', $currentYear)
-                                                                                ->whereMonth('datein', '<=', $currentMonth);
-                                                                      });
-                                                            });
-                                                        })
-                                                        ->count();
+        $totalEmployeesThisCurrentMonth = Employee::whereYear('datein', '<=', $currentYear)
+            ->whereMonth('datein', '<=', $currentMonth)
+            ->count();
 
         $resignedEmployeesThisCurrentMonth = Employee::where('status', 'Resigned')
-                                                     ->whereYear('dateout', $currentYear)
-                                                     ->whereMonth('dateout', $currentMonth)
-                                                     ->count();
+            ->whereYear('dateout', $currentYear)
+            ->whereMonth('dateout', $currentMonth)
+            ->count();
 
-        $resignedPercentageCurrentMonth = $activeEmployeesAtStartOfCurrentMonth > 0 ? ($resignedEmployeesThisCurrentMonth / $activeEmployeesAtStartOfCurrentMonth) * 100 : 0;
-    
+        $resignedPercentageCurrentMonth = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisCurrentMonth / $totalEmployeesThisMonth) * 100 : 0;
+
+
         return view('employees.index', [
             'employees' => $employees,
             'positions' => $positions,
@@ -101,7 +91,7 @@ class EmployeeController extends Controller
         $employee = new Employee($request->all());
 
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('images', 'public'); 
+            $path = $request->file('photo')->store('images', 'public');
             $employee->photo = $path;
         }
 
@@ -130,7 +120,7 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $employee = Employee::findOrFail($id);
-        
+
         $request->validate([
             'nik' => 'required|numeric',
             'name' => 'required|string|max:255',
@@ -145,7 +135,7 @@ class EmployeeController extends Controller
             'dateout' => 'nullable|date',
             'status' => 'required|string'
         ]);
-    
+
         $employee->nik = $request->input('nik');
         $employee->name = $request->input('name');
         $employee->position = $request->input('position');
@@ -157,20 +147,20 @@ class EmployeeController extends Controller
         $employee->datein = $request->input('datein');
         $employee->dateout = $request->input('dateout');
         $employee->status = $request->input('status');
-        
+
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
             if ($employee->photo) {
                 Storage::delete('public/' . $employee->photo);
             }
-    
+
             // Simpan gambar baru
             $path = $request->file('image')->store('images', 'public');
             $employee->photo = $path;
         }
-    
+
         $employee->save();
-    
+
         return redirect()->route('employees.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
@@ -178,7 +168,7 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
         $employee->delete();
-    
+
         return redirect()->route('employees.index')->with('success', 'Karyawan berhasil dihapus.');
     }
 
@@ -192,21 +182,54 @@ class EmployeeController extends Controller
     {
         $currentPosition = $request->input('position', 'all');
         $query = Employee::query();
-    
+
         if ($currentPosition && $currentPosition !== 'all') {
             $query->where('position', $currentPosition);
         }
-    
+
         $employees = $query->get();
         $positions = Employee::select('position')->distinct()->get()->pluck('position');
-    
+
+        // Menghitung persentase karyawan resign tiap bulan
+        $resignedPercentages = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $totalEmployeesThisMonth = Employee::whereYear('datein', '<=', now()->year)
+                ->whereMonth('datein', '<=', $month)
+                ->count();
+
+            $resignedEmployeesThisMonth = Employee::where('status', 'Resigned')
+                ->whereYear('dateout', now()->year)
+                ->whereMonth('dateout', $month)
+                ->count();
+
+            $resignedPercentage = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisMonth / $totalEmployeesThisMonth) * 100 : 0;
+            $resignedPercentages[$month] = $resignedPercentage;
+        }
+
+        // Menghitung persentase karyawan resign bulan ini
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        $totalEmployeesThisCurrentMonth = Employee::whereYear('datein', '<=', $currentYear)
+            ->whereMonth('datein', '<=', $currentMonth)
+            ->count();
+
+        $resignedEmployeesThisCurrentMonth = Employee::where('status', 'Resigned')
+            ->whereYear('dateout', $currentYear)
+            ->whereMonth('dateout', $currentMonth)
+            ->count();
+
+        $resignedPercentageCurrentMonth = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisCurrentMonth / $totalEmployeesThisMonth) * 100 : 0;
+
         return view('employees.index', [
             'employees' => $employees,
             'positions' => $positions,
             'currentPosition' => $currentPosition,
             'employeeCount' => Employee::count(),
             'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
-            'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count()
+            'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count(),
+            'resignedPercentages' => $resignedPercentages,
+            'resignedPercentageCurrentMonth' => $resignedPercentageCurrentMonth
         ]);
     }
 
@@ -214,19 +237,16 @@ class EmployeeController extends Controller
     {
         $resignedPercentages = [];
         for ($month = 1; $month <= 12; $month++) {
-            $activeEmployeesAtStartOfMonth = Employee::where('status', 'On Work')
-                                                     ->where(function($query) use ($month) {
-                                                         $query->whereYear('datein', '<=', now()->year)
-                                                               ->whereMonth('datein', '<=', $month);
-                                                     })
-                                                     ->count();
+            $totalEmployeesThisMonth = Employee::whereYear('datein', '<=', now()->year)
+                ->whereMonth('datein', '<=', $month)
+                ->count();
 
             $resignedEmployeesThisMonth = Employee::where('status', 'Resigned')
-                                                  ->whereYear('dateout', now()->year)
-                                                  ->whereMonth('dateout', $month)
-                                                  ->count();
+                ->whereYear('dateout', now()->year)
+                ->whereMonth('dateout', $month)
+                ->count();
 
-            $resignedPercentage = $activeEmployeesAtStartOfMonth > 0 ? ($resignedEmployeesThisMonth / $activeEmployeesAtStartOfMonth) * 100 : 0;
+            $resignedPercentage = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisMonth / $totalEmployeesThisMonth) * 100 : 0;
             $resignedPercentages[$month] = $resignedPercentage;
         }
 
