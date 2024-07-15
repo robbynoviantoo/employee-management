@@ -11,7 +11,7 @@ class EmployeesExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {
-        return Employee::select('nik','name','photo','position','building','area','cell','idpass','phone','datein','status')->get();
+        return Employee::select('nik','name','photo','position','building','area','cell','idpass','phone','datein','dateout','status')->get();
     }
 
     public function headings(): array
@@ -48,8 +48,8 @@ class EmployeesExport implements FromCollection, WithHeadings, WithMapping
             $employee->cell,
             $employee->idpass,
             $employee->phone,
-            $employee->datein,
-            $employee->dateout,
+            $employee->datein ? \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(new \DateTime($employee->datein)) : null,
+            $employee->dateout ? \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(new \DateTime($employee->dateout)) : null,
             $employee->status,
         ];
     }

@@ -20,24 +20,10 @@ class ImportController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
+        Excel::import(new EmployeesImport, $request->file('file'));
+        // Menambahkan pesan notifikasi ke session
+        $request->session()->put('success', 'Data karyawan berhasil diimpor.');
 
-        $import = new EmployeesImport;
-        Excel::import($import, $request->file('file'));
-
-        // Memperbarui atau menambahkan data
-        foreach ($import->getData() as $row) {
-            // Konversi nilai Excel date ke format tanggal yang benar
-            $row['datein'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['datein'])->format('Y-m-d');
-            if (isset($row['dateout'])) {
-                $row['dateout'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['dateout'])->format('Y-m-d');
-            }
-
-            Employee::updateOrCreate(
-                ['name' => $row['name']], // Pastikan kunci sesuai dengan kolom di file Excel
-                $row->toArray() // Konversi Collection ke array
-            );
-        }
-
-        return redirect()->back()->with('success', 'Data imported successfully.');
+        return redirect('/')->with('success', 'Data karyawan berhasil diimpor.');
     }
 }

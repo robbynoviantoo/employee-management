@@ -26,10 +26,19 @@
             max-width: 1750px;
             margin: 0 auto;
         }
+        .alert {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.6s;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
 <body>
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container custom-container">
@@ -51,6 +60,11 @@
                 </div>
             </div>
         </nav>
+        @if (session('success'))
+        <div class="alert">
+            {{ session('success') }}
+        </div>
+    @endif
     </header>
 
     <main>
@@ -74,6 +88,16 @@
         $(document).ready(function() {
             $('#employees-table').DataTable();
         });
+
+        setTimeout(function() {
+            var alert = document.querySelector('.alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 600);
+            }
+        }, 3000); 
     </script>
     @yield('scripts')
 </body>
