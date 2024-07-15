@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -251,5 +252,26 @@ class EmployeeController extends Controller
         }
 
         return view('employees.resign_monthly', compact('resignedPercentages'));
+    }
+
+    // Fungsi untuk menghapus data karyawan yang duplikat
+    public function deleteDuplicateEmployees()
+    {
+        $duplicates = Employee::select('nik')
+            ->groupBy('nik')
+            ->havingRaw('COUNT(*) > 1')
+            ->get();
+
+        foreach ($duplicates as $duplicate) {
+            $duplicateEmployees = Employee::where('nik', $duplicate->nik)->get();
+
+            // Hapus semua kecuali satu entri
+            $duplicateEmployees->shift(); // Menghapus entri pertama dari koleksi
+            foreach ($duplicateEmployees as $employee) {
+                $employee->delete();
+            }
+        }
+
+        return redirect()->route('employees.index')->with('success', 'Data duplikat berhasil dihapus.');
     }
 }

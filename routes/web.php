@@ -43,3 +43,6 @@ Route::get('/monthly_employee_data', [MonthlyEmployeeDataController::class, 'ind
 
 // Rute untuk halaman view resign bulanan
 Route::get('/resign-monthly', [EmployeeController::class, 'resignMonthly'])->name('employees.resignMonthly');
+
+// Route untuk menghapus data karyawan yang duplikat
+Route::get('/delete-duplicates', [EmployeeController::class, 'deleteDuplicateEmployees'])->name('employees.deleteDuplicates');

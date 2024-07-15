@@ -63,6 +63,7 @@
                     Persentase Resign Bulanan</a>
                 <a href="{{ route('import.form') }}" class="btn btn-warning mb-2 mb-md-0 mr-md-2">Import from Excel</a>
                 <a href="{{ route('employees.export') }}" class="btn btn-success mb-2 mb-md-0">Export to Excel</a>
+                <a href="{{ route('employees.deleteDuplicates') }}" class="btn btn-danger mb-2 mb-md-0">Hapus Duplikat</a>
             </div>
         </div>
 

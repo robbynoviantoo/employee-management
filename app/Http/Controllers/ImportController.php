@@ -20,7 +20,40 @@ class ImportController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
-        Excel::import(new EmployeesImport, $request->file('file'));
+
+        $import = new EmployeesImport;
+        Excel::import($import, $request->file('file'));
+
+        // Memperbarui atau menambahkan data
+        foreach ($import->getData() as $row) {
+            // Konversi nilai Excel date ke format tanggal yang benar
+            $row['datein'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['datein'])->format('Y-m-d');
+            if (isset($row['dateout'])) {
+                $row['dateout'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['dateout'])->format('Y-m-d');
+            }
+
+            // Konversi Collection ke array
+            $rowArray = $row->toArray();
+
+            // Pastikan kunci sesuai dengan kolom di file Excel
+            Employee::updateOrCreate(
+                ['nik' => $rowArray['nik']],
+                [
+                    'name' => $rowArray['name'],
+                    'photo' => $rowArray['photo'],
+                    'position' => $rowArray['position'],
+                    'building' => $rowArray['building'],
+                    'area' => $rowArray['area'],
+                    'cell' => $rowArray['cell'],
+                    'idpass' => $rowArray['idpass'] ?? null,
+                    'phone' => $rowArray['phone'],
+                    'datein' => $rowArray['datein'],
+                    'dateout' => $rowArray['dateout'] ?? null,
+                    'status' => $rowArray['status'],
+                ]
+            );
+        }
+
         // Menambahkan pesan notifikasi ke session
         $request->session()->put('success', 'Data karyawan berhasil diimpor.');
 
