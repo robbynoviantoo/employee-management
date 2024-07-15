@@ -7,7 +7,12 @@
             <h4 class="mb-0">Detail Karyawan</h4>
         </div>
         <div class="card-body">
+            
             <h5 class="card-title text-center" style="font-size: 2rem;">{{ $employee->name }}</h5>
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold">NIK</div>
+                <div class="col-md-9">: {{ $employee->nik }}</div>
+            </div>
             @if($employee->photo)
                 <img src="{{ asset('images/' . $employee->photo) }}" class="img-thumbnail mb-3 d-block mx-auto" alt="Foto Karyawan" style="max-width: 400px; height: auto;">
             @else
@@ -28,6 +33,10 @@
             <div class="row mb-2">
                 <div class="col-md-3 font-weight-bold">Cell</div>
                 <div class="col-md-9">: {{ $employee->cell }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold">ID Pass</div>
+                <div class="col-md-9">: {{ $employee->idpass }}</div>
             </div>
             <div class="row mb-2">
                 <div class="col-md-3 font-weight-bold">Telepon</div>

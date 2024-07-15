@@ -7,12 +7,23 @@
             <h4 class="mb-0">Edit Karyawan</h4>
         </div>
         <div class="card-body">
-            <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+            <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
+                    <label for="nik">NIK:</label>
+                    <input type="text" class="form-control" name="nik" id="nik" value="{{ $employee->nik }}" required>
+                </div>
+                <div class="form-group">
                     <label for="name">Nama:</label>
                     <input type="text" class="form-control" name="name" id="name" value="{{ $employee->name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Gambar:</label>
+                    <input type="file" class="form-control" name="image" id="image">
+                    @if($employee->image)
+                        <img src="{{ asset('storage/' . $employee->image) }}" alt="Employee Image" class="img-thumbnail mt-2" width="150">
+                    @endif
                 </div>
                 <div class="form-group">
                     <label for="jabatan">Jabatan:</label>
@@ -31,12 +42,20 @@
                     <input type="text" class="form-control" name="cell" id="cell" value="{{ $employee->cell}}" required>
                 </div>
                 <div class="form-group">
+                    <label for="idpass">ID Pass:</label>
+                    <input type="text" class="form-control" name="idpass" id="idpass" value="{{ $employee->idpass }}">
+                </div>
+                <div class="form-group">
                     <label for="phone">No. Handphone:</label>
                     <input type="tel" class="form-control" name="phone" id="phone" value="{{ $employee->phone }}" required>
                 </div>
                 <div class="form-group">
                     <label for="datein">Tanggal Masuk:</label>
                     <input type="text" class="form-control" name="datein" id="datein" value="{{ $employee->datein }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="dateout">Tanggal Resign:</label>
+                    <input type="text" class="form-control" name="dateout" id="dateout" value="{{ $employee->dateout }}">
                 </div>
                 <div class="form-group">
                     <label for="status">Status:</label>

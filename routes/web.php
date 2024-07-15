@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\MonthlyEmployeeDataController;
 
 // Route untuk menampilkan daftar karyawan
 Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
@@ -36,3 +37,9 @@ Route::post('/import', [ImportController::class, 'import'])->name('import.proces
 
 // Route untuk menampilkan karyawan berdasarkan jabatan yang difilter
 Route::get('/employees/', [EmployeeController::class, 'filter'])->name('employees.filter');
+
+// Route untuk mengakses halaman data karyawan bulanan
+Route::resource('monthly_employee_data', MonthlyEmployeeDataController::class);
+
+// Rute untuk halaman view resign bulanan
+Route::get('/resign-monthly', [EmployeeController::class, 'resignMonthly'])->name('employees.resignMonthly');

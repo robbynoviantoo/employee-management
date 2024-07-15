@@ -24,6 +24,10 @@
                         <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
+                                <label for="nik" class="form-label">NIK</label>
+                                <input type="text" class="form-control" name="nik" id="nik" value="{{ old('nik') }}" placeholder="Masukkan NIK" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="name" class="form-label">Nama</label>
                                 <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" placeholder="Masukkan nama" required>
                             </div>
@@ -48,9 +52,17 @@
                                 <input type="text" class="form-control" name="cell" id="cell" value="{{ old('cell') }}" placeholder="Masukkan cell" required>
                             </div>
                             <div class="form-group">
+                                <label for="idpass" class="form-label">ID Pass</label>
+                                <input type="text" class="form-control" name="idpass" id="idpass" value="{{ old('idpass') }}" placeholder="Masukkan ID Pass">
+                            </div>
+                            <div class="form-group">
                                 <label for="phone" class="form-label">No. Handphone</label>
                                 <input type="tel" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" placeholder="Masukkan no. handphone" required>
                                 <small id="phoneHelpBlock" class="form-text text-muted" style="display: none;"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="dateout" class="form-label">Tanggal Resign</label>
+                                <input type="date" class="form-control" name="dateout" id="dateout" value="{{ old('dateout') }}">
                             </div>
                             <div class="form-group">
                                 <label for="datein" class="form-label">Tanggal Masuk</label>

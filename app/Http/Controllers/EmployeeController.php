@@ -6,6 +6,7 @@ use App\Exports\EmployeesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
 {
@@ -20,6 +21,48 @@ class EmployeeController extends Controller
     
         $employees = $query->get();
         $positions = Employee::select('position')->distinct()->get()->pluck('position');
+        
+        // Menghitung persentase karyawan resign tiap bulan
+        $resignedPercentages = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $activeEmployeesAtStartOfMonth = Employee::where('status', 'On Work')
+                                                     ->where(function($query) use ($month) {
+                                                         $query->whereYear('datein', '<=', now()->year)
+                                                               ->whereMonth('datein', '<=', $month);
+                                                     })
+                                                     ->count();
+
+            $resignedEmployeesThisMonth = Employee::where('status', 'Resigned')
+                                                  ->whereYear('dateout', now()->year)
+                                                  ->whereMonth('dateout', $month)
+                                                  ->count();
+
+            $resignedPercentage = $activeEmployeesAtStartOfMonth > 0 ? ($resignedEmployeesThisMonth / $activeEmployeesAtStartOfMonth) * 100 : 0;
+            $resignedPercentages[$month] = $resignedPercentage;
+        }
+
+        // Menghitung persentase karyawan resign bulan ini
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        $activeEmployeesAtStartOfCurrentMonth = Employee::where('status', 'On Work')
+                                                        ->where(function($query) use ($currentYear, $currentMonth) {
+                                                            $query->where(function($query) use ($currentYear, $currentMonth) {
+                                                                $query->whereYear('datein', '<', $currentYear)
+                                                                      ->orWhere(function($query) use ($currentYear, $currentMonth) {
+                                                                          $query->whereYear('datein', '=', $currentYear)
+                                                                                ->whereMonth('datein', '<=', $currentMonth);
+                                                                      });
+                                                            });
+                                                        })
+                                                        ->count();
+
+        $resignedEmployeesThisCurrentMonth = Employee::where('status', 'Resigned')
+                                                     ->whereYear('dateout', $currentYear)
+                                                     ->whereMonth('dateout', $currentMonth)
+                                                     ->count();
+
+        $resignedPercentageCurrentMonth = $activeEmployeesAtStartOfCurrentMonth > 0 ? ($resignedEmployeesThisCurrentMonth / $activeEmployeesAtStartOfCurrentMonth) * 100 : 0;
     
         return view('employees.index', [
             'employees' => $employees,
@@ -27,7 +70,9 @@ class EmployeeController extends Controller
             'currentPosition' => $currentPosition,
             'employeeCount' => Employee::count(),
             'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
-            'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count()
+            'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count(),
+            'resignedPercentages' => $resignedPercentages,
+            'resignedPercentageCurrentMonth' => $resignedPercentageCurrentMonth
         ]);
     }
 
@@ -39,6 +84,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'nik' => 'required',
             'name' => 'required',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'position' => 'required',
@@ -46,16 +92,22 @@ class EmployeeController extends Controller
             'area' => 'required',
             'cell' => 'required',
             'phone' => 'required|numeric',
+            'idpass' => 'nullable',
             'datein' => 'required|date',
+            'dateout' => 'nullable|date',
             'status' => 'required',
         ]);
 
         $employee = new Employee($request->all());
 
         if ($request->hasFile('photo')) {
-            $imageName = time().'.'.$request->photo->extension();
-            $request->photo->move(public_path('images'), $imageName);
-            $employee->photo = $imageName;
+            $path = $request->file('photo')->store('images', 'public'); 
+            $employee->photo = $path;
+        }
+
+        // Atur nilai default untuk dateout jika tidak ada
+        if (is_null($employee->dateout)) {
+            $employee->dateout = null; // atau nilai default lain yang sesuai
         }
 
         $employee->save();
@@ -75,21 +127,51 @@ class EmployeeController extends Controller
         return view('employees.edit', compact('employee'));
     }
 
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'position' => 'required',
-            'building' => 'required',
-            'area' => 'required',
-            'cell' => 'required',
-            'phone' => 'required|numeric',
+        $employee = Employee::findOrFail($id);
+        
+        $request->validate([
+            'nik' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'position' => 'required|string|max:255',
+            'building' => 'nullable|string|max:255',
+            'area' => 'nullable|string|max:255',
+            'cell' => 'nullable|string|max:255',
+            'phone' => 'required|string|max:15',
+            'idpass' => 'nullable',
             'datein' => 'required|date',
-            'status' => 'required',
+            'dateout' => 'nullable|date',
+            'status' => 'required|string'
         ]);
-        $employee->update($validatedData);
-        return redirect()->route('employees.index');
+    
+        $employee->nik = $request->input('nik');
+        $employee->name = $request->input('name');
+        $employee->position = $request->input('position');
+        $employee->building = $request->input('building');
+        $employee->area = $request->input('area');
+        $employee->cell = $request->input('cell');
+        $employee->phone = $request->input('phone');
+        $employee->idpass = $request->input('idpass');
+        $employee->datein = $request->input('datein');
+        $employee->dateout = $request->input('dateout');
+        $employee->status = $request->input('status');
+        
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($employee->photo) {
+                Storage::delete('public/' . $employee->photo);
+            }
+    
+            // Simpan gambar baru
+            $path = $request->file('image')->store('images', 'public');
+            $employee->photo = $path;
+        }
+    
+        $employee->save();
+    
+        return redirect()->route('employees.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -126,5 +208,28 @@ class EmployeeController extends Controller
             'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
             'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count()
         ]);
+    }
+
+    public function resignMonthly()
+    {
+        $resignedPercentages = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $activeEmployeesAtStartOfMonth = Employee::where('status', 'On Work')
+                                                     ->where(function($query) use ($month) {
+                                                         $query->whereYear('datein', '<=', now()->year)
+                                                               ->whereMonth('datein', '<=', $month);
+                                                     })
+                                                     ->count();
+
+            $resignedEmployeesThisMonth = Employee::where('status', 'Resigned')
+                                                  ->whereYear('dateout', now()->year)
+                                                  ->whereMonth('dateout', $month)
+                                                  ->count();
+
+            $resignedPercentage = $activeEmployeesAtStartOfMonth > 0 ? ($resignedEmployeesThisMonth / $activeEmployeesAtStartOfMonth) * 100 : 0;
+            $resignedPercentages[$month] = $resignedPercentage;
+        }
+
+        return view('employees.resign_monthly', compact('resignedPercentages'));
     }
 }
