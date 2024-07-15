@@ -19,9 +19,10 @@ class ImportController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
-
         Excel::import(new EmployeesImport, $request->file('file'));
+        // Menambahkan pesan notifikasi ke session
+        $request->session()->put('success', 'Data karyawan berhasil diimpor.');
 
-        return redirect()->back()->with('success', 'Data imported successfully.');
+        return redirect('/')->with('success', 'Data karyawan berhasil diimpor.');
     }
 }
