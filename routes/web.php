@@ -15,16 +15,16 @@ Route::get('/employees/create', [EmployeeController::class, 'create'])->name('em
 Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
 
 // Route untuk menampilkan detail karyawan
-Route::get('/employees/{id}', [EmployeeController::class, 'show'])->name('employees.show');
+Route::get('/employees/{nik}', [EmployeeController::class, 'show'])->name('employees.show');
 
 // Route untuk menampilkan form edit karyawan
-Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+Route::get('/employees/{nik}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
 
 // Route untuk mengupdate data karyawan
-Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+Route::put('/employees/{nik}', [EmployeeController::class, 'update'])->name('employees.update');
 
 // Route untuk menghapus data karyawan
-Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+Route::delete('/employees/{nik}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 
 // Route untuk mengekspor data karyawan
 Route::get('/export', [EmployeeController::class, 'export'])->name('employees.export');

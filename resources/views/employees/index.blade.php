@@ -6,8 +6,8 @@
     <div class="container-fluid mt-5">
         <h1 class="mb-4">INFORMATION</h1>
         <div class="row mb-4">
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card h-100">
                     <div class="card-header">Jumlah Karyawan</div>
                     <div class="card-body">
                         <h1 class="card-title">{{ $employeeCount }}</h1>
@@ -15,8 +15,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card h-100">
                     <div class="card-header">Karyawan Aktif</div>
                     <div class="card-body">
                         <h1 class="card-title">{{ $activeEmployeeCount }}</h1>
@@ -24,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card h-100">
                     <div class="card-header">Karyawan Resign</div>
                     <div class="card-body">
                         <h1 class="card-title">{{ $resignedEmployeeCount }}</h1>
@@ -33,8 +33,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card h-100">
                     <div class="card-header">Karyawan Resign Bulan Ini</div>
                     <div class="card-body">
                         <h1 class="card-title">{{ number_format($resignedPercentageCurrentMonth, 2) }}%</h1>
@@ -60,10 +60,10 @@
             </form>
             <div class="d-flex flex-column flex-md-row">
                 <a href="{{ route('monthly_employee_data.index') }}" class="btn btn-info mb-2 mb-md-0 mr-md-2">Lihat
-                    Persentase Resign Bulanan</a>
+                    Persentase Resign Bulanan</a> 
                 <a href="{{ route('import.form') }}" class="btn btn-warning mb-2 mb-md-0 mr-md-2">Import from Excel</a>
-                <a href="{{ route('employees.export') }}" class="btn btn-success mb-2 mb-md-0">Export to Excel</a>
-                <a href="{{ route('employees.deleteDuplicates') }}" class="btn btn-danger mb-2 mb-md-0">Hapus Duplikat</a>
+                <a href="{{ route('employees.export') }}" class="btn btn-success mb-2 mb-md-0 mr-md-2">Export to Excel</a>
+                {{-- <a href="{{ route('employees.deleteDuplicates') }}" class="btn btn-danger mb-2 mb-md-0">Hapus Duplikat</a> --}}
             </div>
         </div>
 
@@ -117,11 +117,11 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="{{ route('employees.show', ['id' => $employee->id]) }}"
+                                    <a href="{{ route('employees.show', ['nik' => $employee->nik]) }}"
                                         class="btn btn-primary btn-sm mr-1">Lihat</a>
-                                    <a href="{{ route('employees.edit', ['id' => $employee->id]) }}"
+                                    <a href="{{ route('employees.edit', ['nik' => $employee->nik]) }}"
                                         class="btn btn-warning btn-sm mr-1">Edit</a>
-                                    <form action="{{ route('employees.destroy', ['id' => $employee->id]) }}" method="POST"
+                                    <form action="{{ route('employees.destroy', ['nik' => $employee->nik]) }}" method="POST"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')

@@ -9,8 +9,8 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        // Jalankan command setiap awal tahun untuk memproses data dari Januari hingga Desember
-        $schedule->command('update:monthly-employee-data')->yearlyOn(1, '00:00');
+        // Jalankan command setiap menit
+        $schedule->command('update:monthly-employee-data')->everyMinute();
     }
 
     protected function commands()

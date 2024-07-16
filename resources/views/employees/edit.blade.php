@@ -9,7 +9,7 @@
                 <h4 class="mb-0">Edit Karyawan</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('employees.update', $employee->nik) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -62,12 +62,12 @@
                     </div>
                     <div class="form-group">
                         <label for="datein">Tanggal Masuk:</label>
-                        <input type="text" class="form-control" name="datein" id="datein"
+                        <input type="date" class="form-control" name="datein" id="datein"
                             value="{{ $employee->datein }}" required>
                     </div>
                     <div class="form-group">
                         <label for="dateout">Tanggal Resign:</label>
-                        <input type="text" class="form-control" name="dateout" id="dateout"
+                        <input type="date" class="form-control" name="dateout" id="dateout"
                             value="{{ $employee->dateout }}">
                     </div>
                     <div class="form-group">

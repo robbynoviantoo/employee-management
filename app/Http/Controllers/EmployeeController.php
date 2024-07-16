@@ -106,21 +106,21 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    public function show($id)
+    public function show($nik)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::where('nik', $nik)->firstOrFail();
         return view('employees.show', compact('employee'));
     }
 
-    public function edit($id)
+    public function edit($nik)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::where('nik', $nik)->firstOrFail();
         return view('employees.edit', compact('employee'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $nik)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::where('nik', $nik)->firstOrFail();
 
         $request->validate([
             'nik' => 'required|numeric',
@@ -165,9 +165,9 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy($nik)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::where('nik', $nik)->firstOrFail();
         $employee->delete();
 
         return redirect()->route('employees.index')->with('success', 'Karyawan berhasil dihapus.');
@@ -274,4 +274,4 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')->with('success', 'Data duplikat berhasil dihapus.');
     }
-} 
+}
