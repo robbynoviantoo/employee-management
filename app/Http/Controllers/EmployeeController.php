@@ -54,6 +54,31 @@ class EmployeeController extends Controller
 
         $resignedPercentageCurrentMonth = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisCurrentMonth / $totalEmployeesThisMonth) * 100 : 0;
 
+        $previousMonth = now()->subMonth()->month;
+        $previousYear = now()->subYear()->year;
+
+        $currentMonthEmployeeCount = Employee::where('status', 'On Work')
+            ->orWhere('status', 'Resigned')
+            ->count();
+
+        $previousMonthEmployeeCount = Employee::where(function($query) {
+                $query->where('status', 'On Work')
+                      ->orWhere('status', 'Resigned');
+            })
+            ->where(function($query) {
+                $query->whereYear('datein', '<', now()->year)
+                      ->orWhere(function($query) {
+                          $query->whereYear('datein', '=', now()->year)
+                                ->whereMonth('datein', '<', now()->month);
+                      });
+            })
+            ->count();
+
+        $employeeChange = $currentMonthEmployeeCount - $previousMonthEmployeeCount;
+        $employeeChangePercentage = $previousMonthEmployeeCount > 0 ? abs(($employeeChange / $previousMonthEmployeeCount) * 100) : 0;
+
+        // Menampilkan jumlah karyawan saat ini
+        $currentEmployeeCount = Employee::where('status', 'On Work')->count();
 
         return view('employees.index', [
             'employees' => $employees,
@@ -63,7 +88,10 @@ class EmployeeController extends Controller
             'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
             'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count(),
             'resignedPercentages' => $resignedPercentages,
-            'resignedPercentageCurrentMonth' => $resignedPercentageCurrentMonth
+            'resignedPercentageCurrentMonth' => $resignedPercentageCurrentMonth,
+            'employeeChange' => $employeeChange,
+            'employeeChangePercentage' => $employeeChangePercentage,
+            'currentEmployeeCount' => $currentEmployeeCount,
         ]);
     }
 
@@ -222,6 +250,32 @@ class EmployeeController extends Controller
 
         $resignedPercentageCurrentMonth = $totalEmployeesThisMonth > 0 ? ($resignedEmployeesThisCurrentMonth / $totalEmployeesThisMonth) * 100 : 0;
 
+        $previousMonth = now()->subMonth()->month;
+        $previousYear = now()->subYear()->year;
+
+        $currentMonthEmployeeCount = Employee::where('status', 'On Work')
+            ->orWhere('status', 'Resigned')
+            ->count();
+
+        $previousMonthEmployeeCount = Employee::where(function($query) {
+                $query->where('status', 'On Work')
+                      ->orWhere('status', 'Resigned');
+            })
+            ->where(function($query) {
+                $query->whereYear('datein', '<', now()->year)
+                      ->orWhere(function($query) {
+                          $query->whereYear('datein', '=', now()->year)
+                                ->whereMonth('datein', '<', now()->month);
+                      });
+            })
+            ->count();
+
+        $employeeChange = $currentMonthEmployeeCount - $previousMonthEmployeeCount;
+        $employeeChangePercentage = $previousMonthEmployeeCount > 0 ? abs(($employeeChange / $previousMonthEmployeeCount) * 100) : 0;
+
+        // Menampilkan jumlah karyawan saat ini
+        $currentEmployeeCount = Employee::where('status', 'On Work')->count();
+
         return view('employees.index', [
             'employees' => $employees,
             'positions' => $positions,
@@ -230,7 +284,10 @@ class EmployeeController extends Controller
             'activeEmployeeCount' => Employee::where('status', 'On Work')->count(),
             'resignedEmployeeCount' => Employee::where('status', 'Resigned')->count(),
             'resignedPercentages' => $resignedPercentages,
-            'resignedPercentageCurrentMonth' => $resignedPercentageCurrentMonth
+            'resignedPercentageCurrentMonth' => $resignedPercentageCurrentMonth,
+            'employeeChange' => $employeeChange,
+            'employeeChangePercentage' => $employeeChangePercentage,
+            'currentEmployeeCount' => $currentEmployeeCount,
         ]);
     }
 

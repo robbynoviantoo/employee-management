@@ -49,20 +49,20 @@
                 <div class="col-md-4">
                     <select name="year" class="form-control">
                         <option value="">Pilih Tahun</option>
-                        @foreach ($years->sort() as $year) <!-- Mengurutkan tahun secara ascending -->
+                        @foreach ($years->sort() as $year)
                             <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4 mt-2">
-                    <select name="month" class="form-control">
+                <div class="col-md-4">
+                    <select name="month" class="form-control mt-md-0 mt-2">
                         <option value="">Pilih Bulan</option>
                         @foreach (range(1, 12) as $month)
                             <option value="{{ $month }}" {{ request('month') == $month ? 'selected' : '' }}>{{ getMonthName($month) }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4 d-flex align-items-center mt-2">
+                <div class="col-md-4 d-flex align-items-center">
                     <button type="submit" class="btn btn-primary mr-2">Filter</button>
                     <a href="{{ route('monthly_employee_data.index') }}" class="btn btn-secondary">Reset</a>
                 </div>

@@ -3,9 +3,9 @@
 @section('title', 'Edit Karyawan')
 
 @section('content')
-    <div class="container mt-5">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
+    <div class="container mt-5 mb-5">
+        <div class="card shadow-sm costum-rounded">
+            <div class="card-header bg-dark text-white ">
                 <h4 class="mb-0">Edit Karyawan</h4>
             </div>
             <div class="card-body">
@@ -84,4 +84,12 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('styles')
+    <style>
+        .card-header {
+            background-color: var(--bs-primary); /* Menggunakan warna dari navbar */
+        }
+    </style>
 @endsection
