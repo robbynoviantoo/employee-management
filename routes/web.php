@@ -4,15 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MonthlyEmployeeDataController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Auth;
 
 // Route untuk menampilkan daftar karyawan
 Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
 
 // Route untuk menampilkan form tambah karyawan
-Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
-
-// Route untuk menyimpan data karyawan baru
-Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+});
 
 // Route untuk menampilkan detail karyawan
 Route::get('/employees/{nik}', [EmployeeController::class, 'show'])->name('employees.show');
@@ -46,3 +48,14 @@ Route::get('/resign-monthly', [EmployeeController::class, 'resignMonthly'])->nam
 
 // Route untuk menghapus data karyawan yang duplikat
 Route::get('/delete-duplicates', [EmployeeController::class, 'deleteDuplicateEmployees'])->name('employees.deleteDuplicates');
+
+// Rute untuk halaman login
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+
+// Rute untuk logout
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

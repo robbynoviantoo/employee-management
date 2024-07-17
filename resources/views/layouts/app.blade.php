@@ -45,22 +45,55 @@
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container custom-container">
-                <a class="navbar-brand" href="/">QIP TEAM</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    QIP TEAM
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+     
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+                        <!-- Tautan lainnya -->
+                    </ul>
+     
+                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item {{ request()->routeIs('employees.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('employees.index') }}">Daftar Karyawan</a>
-                        </li>
-                        <li class="nav-item {{ request()->routeIs('employees.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('employees.create') }}">Tambah Karyawan</a>
-                        </li>
-                        <!-- Tambahkan menu navigasi lainnya sesuai kebutuhan -->
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="btn btn-primary btn-custom" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item" style="display: none;">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('employees.create') }}">{{ __('Tambah Karyawan') }}</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+     
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+     
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
                     </ul>
                 </div>
             </div>

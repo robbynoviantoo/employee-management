@@ -97,11 +97,19 @@ class EmployeeController extends Controller
 
     public function create()
     {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         return view('employees.create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         $validatedData = $request->validate([
             'nik' => 'required',
             'name' => 'required',
