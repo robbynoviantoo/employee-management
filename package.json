@@ -11,6 +11,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "bootstrap": "^5.3.3",
         "datatables.net-bs4": "^2.0.8"
     }
 }

@@ -136,12 +136,12 @@
                                             class="btn btn-primary btn-sm mr-1">Lihat</a>
                                         <a href="{{ route('employees.edit', ['nik' => $employee->nik]) }}"
                                             class="btn btn-warning btn-sm mr-1">Edit</a>
-                                        <form action="{{ route('employees.destroy', ['nik' => $employee->nik]) }}"
+                                        {{-- <form action="{{ route('employees.destroy', ['nik' => $employee->nik]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 </td>
                             </tr>

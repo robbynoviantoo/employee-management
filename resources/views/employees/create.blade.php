@@ -69,14 +69,14 @@
                                 <small id="phoneHelpBlock" class="form-text text-muted" style="display: none;"></small>
                             </div>
                             <div class="form-group">
-                                <label for="dateout" class="form-label">Tanggal Resign</label>
-                                <input type="date" class="form-control" name="dateout" id="dateout"
-                                    value="{{ old('dateout') }}">
-                            </div>
-                            <div class="form-group">
                                 <label for="datein" class="form-label">Tanggal Masuk</label>
                                 <input type="date" class="form-control" name="datein" id="datein"
                                     value="{{ old('datein', date('Y-m-d')) }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dateout" class="form-label">Tanggal Resign</label>
+                                <input type="date" class="form-control" name="dateout" id="dateout"
+                                    value="{{ old('dateout') }}">
                             </div>
                             <div class="form-group">
                                 <label for="status" class="form-label">Status</label>
