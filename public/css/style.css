@@ -60,3 +60,11 @@ body{
     border-color: #007bff;
     width: 125px;
 }
+
+.btn-customm{
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    color: #000000;
+    border-color: #e0e0e0;
+    width: 160px;
+}
