@@ -53,3 +53,6 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route untuk menjalankan perintah artisan
+Route::post('/artisan-command', [App\Http\Controllers\MonthlyEmployeeDataController::class, 'runCommand'])->name('artisan.command');

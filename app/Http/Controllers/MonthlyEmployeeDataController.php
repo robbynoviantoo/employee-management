@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\MonthlyEmployeeData;
 use App\Models\Employee;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class MonthlyEmployeeDataController extends Controller
 {
@@ -46,5 +47,13 @@ class MonthlyEmployeeDataController extends Controller
         MonthlyEmployeeData::create($validatedData);
 
         return redirect()->route('monthly_employee_data.index')->with('success', 'Data berhasil disimpan.');
+    }
+
+    public function runCommand(Request $request)
+    {
+        $command = $request->input('command');
+        Artisan::call($command);
+
+        return response()->json(['success' => true]);
     }
 }
