@@ -113,7 +113,7 @@ class EmployeeController extends Controller
         $validatedData = $request->validate([
             'nik' => 'required',
             'name' => 'required',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048',
             'position' => 'required',
             'building' => 'required',
             'area' => 'required',
@@ -161,7 +161,7 @@ class EmployeeController extends Controller
         $request->validate([
             'nik' => 'required|numeric',
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048',
             'position' => 'required|string|max:255',
             'building' => 'nullable|string|max:255',
             'area' => 'nullable|string|max:255',
