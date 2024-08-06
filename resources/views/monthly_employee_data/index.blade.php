@@ -70,6 +70,10 @@
         </form>
     </div>
 
+    <div class="mb-3">
+        <button id="processCommand" class="btn btn-success">Proses Perintah</button>
+    </div>
+
     <div class="table-responsive">
         <table id="employeeTable" class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
@@ -113,6 +117,23 @@
         $('#employeeTable').DataTable({
             "pageLength": 12,
             "order": [[0, "desc"]] // Mengurutkan kolom pertama (Tahun) secara descending
+        });
+
+        $('#processCommand').click(function() {
+            $.ajax({
+                url: '{{ route('artisan.command') }}',
+                method: 'POST',
+                data: {
+                    command: 'update:monthly-employee-data {{ request ('year') }}',
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    alert('Perintah berhasil diproses!');
+                },
+                error: function(response) {
+                    alert('Terjadi kesalahan saat memproses perintah.');
+                }
+            });
         });
     });
 </script>

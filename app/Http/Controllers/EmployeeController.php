@@ -142,10 +142,12 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    public function show($nik)
+    public function show($id)
     {
-        $employee = Employee::where('nik', $nik)->firstOrFail();
-        return view('employees.show', compact('employee'));
+        $employee = Employee::findOrFail($id);
+
+        // Mengembalikan data dalam format JSON
+        return response()->json($employee);
     }
 
     public function edit($nik)

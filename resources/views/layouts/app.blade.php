@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('resources/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('resources/css/datatables/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('resources/css/fontawesome/all.min.css') }}">
     <style>
         .center-text {
             text-align: center;
@@ -117,11 +117,15 @@
 
     <!-- JavaScript atau library lainnya -->
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('resources/js/jquery/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('resources/js/popper/popper.min.js') }}"></script>
+    <script src="{{ asset('resources/js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('resources/js/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('resources/js/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('resources/js/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('resources/js/show.js') }}"></script>
+
+
     <script>
         $(document).ready(function() {
             $('#employees-table').DataTable();

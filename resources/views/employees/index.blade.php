@@ -72,7 +72,7 @@
                     <button type="submit" class="btn btn-primary">Apply Filter</button>
                 </form>
                 <div class="d-flex flex-column flex-md-row">
-                    <a href="{{ route('monthly_employee_data.index') }}" class="btn btn-info mb-2 mb-md-0 mr-md-2">Lihat
+                    <a href="{{ route('monthly_employee_data.index') }}" class="btn btn-danger mb-2 mb-md-0 mr-md-2">Lihat
                         Persentase</a>
                     <a href="{{ route('import.form') }}" class="btn btn-warning mb-2 mb-md-0 mr-md-2">Import from Excel</a>
                     <a href="{{ route('employees.export') }}" class="btn btn-success mb-2 mb-md-0 mr-md-2">Export to
@@ -109,7 +109,7 @@
                                 <td>{{ $employee->nik }}</td>
                                 <td>{{ $employee->name }}</td>
                                 <td>
-                                    <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-photo.png') }}"
+                                    <img src="{{ $employee->photo ? asset('storage/app/public/' . $employee->photo) : asset('public/images/default-photo.png') }}"
                                         alt="Foto" width="50">
                                 </td>
                                 <td>{{ $employee->position }}</td>
@@ -131,9 +131,21 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a href="{{ route('employees.show', ['nik' => $employee->nik]) }}"
-                                            class="btn btn-primary btn-sm mr-1">Lihat</a>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('employees.show', $employee->nik) }}" 
+                                            class="btn btn-info btn-sm mr-1" data-format='[
+                                                {"label": "Photo", "key": "photo"},
+                                                {"label": "NIK", "key": "nik"},
+                                                {"label": "Nama", "key": "name"},
+                                                {"label": "Jabatan", "key": "position"},
+                                                {"label": "Gedung", "key": "building"},
+                                                {"label": "Area", "key": "area"},
+                                                {"label": "Cell", "key": "cell"},
+                                                {"label": "ID Pass", "key": "idpass"},
+                                                {"label": "No.Handphone", "key": "phone"},
+                                                {"label": "Tanggal Masuk", "key": "datein"},
+                                                {"label": "Tanggal Resign", "key": "dateout"},
+                                                {"label": "Status", "key": "status"}]'>Lihat</a>
                                         @auth
                                             <a href="{{ route('employees.edit', ['nik' => $employee->nik]) }}"
                                                 class="btn btn-warning btn-sm mr-1">Edit</a>
@@ -152,5 +164,7 @@
                 </table>
             </div>
         </div>
-
+        <script>
+            var imageBaseUrl = "{{ asset('storage/app/public/') }}";
+        </script>
     @endsection

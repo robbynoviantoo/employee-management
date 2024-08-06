@@ -16,7 +16,7 @@
                     <div class="col-md-9">: {{ $employee->nik }}</div>
                 </div>
                 @if ($employee->photo)
-                    <img src="{{ asset('images/' . $employee->photo) }}" class="img-thumbnail mb-3 d-block mx-auto"
+                    <img src="{{ asset('storage/app/public/' . $employee->photo) }}" class="img-thumbnail mb-3 d-block mx-auto"
                         alt="Foto Karyawan" style="max-width: 400px; height: auto;">
                 @else
                     <p class="text-center">No photo available</p>
