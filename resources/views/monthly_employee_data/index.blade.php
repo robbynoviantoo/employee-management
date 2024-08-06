@@ -124,7 +124,7 @@
                 url: '{{ route('artisan.command') }}',
                 method: 'POST',
                 data: {
-                    command: 'update:monthly-employee-data {{ request ('year') }}',
+                    command: 'update:monthly-employee-data {{ request('year') }}',
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
