@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+    <link rel="icon" href="{{asset('public/hwi.ico')}}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('resources/css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('resources/css/datatables/dataTables.bootstrap4.min.css') }}">

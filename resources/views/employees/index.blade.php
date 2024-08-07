@@ -106,7 +106,7 @@
                         @foreach ($employees as $index => $employee)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $employee->nik }}</td>
+                                <td><a href="{{ route('training.index', $employee->nik) }}">{{ $employee->nik }}</a></td>
                                 <td>{{ $employee->name }}</td>
                                 <td>
                                     <img src="{{ $employee->photo ? asset('storage/app/public/' . $employee->photo) : asset('public/images/default-photo.png') }}"

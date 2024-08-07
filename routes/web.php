@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MonthlyEmployeeDataController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Auth;
 
 // Route untuk menampilkan daftar karyawan
@@ -56,3 +57,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Route untuk menjalankan perintah artisan
 Route::post('/artisan-command', [App\Http\Controllers\MonthlyEmployeeDataController::class, 'runCommand'])->name('artisan.command');
+
+
+Route::get('/employees/training/{nik}', [TrainingController::class, 'index'])->name('training.index');

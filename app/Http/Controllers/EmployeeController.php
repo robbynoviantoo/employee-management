@@ -341,4 +341,5 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')->with('success', 'Data duplikat berhasil dihapus.');
     }
+
 }

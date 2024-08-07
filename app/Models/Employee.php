@@ -29,4 +29,9 @@ class Employee extends Model
         'dateout',
         'status',
     ];
+
+    public function trainingNewComers()
+    {
+        return $this->hasMany(TrainingNewComer::class, 'nik', 'nik');
+    }
 }
