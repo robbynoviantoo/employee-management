@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "bootstrap": "^5.3.3",
-        "datatables.net-bs4": "^2.0.8"
+        "datatables.net-bs4": "^2.0.8",
+        "select2": "^4.1.0-rc.0"
     }
 }

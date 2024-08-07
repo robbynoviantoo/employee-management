@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('resources/css/datatables/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('resources/css/fontawesome/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('resources/css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .center-text {
             text-align: center;
@@ -169,6 +171,7 @@
     <script src="{{ asset('resources/js/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('resources/js/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('resources/js/show.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function() {
