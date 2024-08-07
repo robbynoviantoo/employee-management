@@ -30,8 +30,8 @@ class Employee extends Model
         'status',
     ];
 
-    public function trainingNewComers()
+    public function trainings()
     {
-        return $this->hasMany(TrainingNewComer::class, 'nik', 'nik');
+        return $this->hasMany(Training::class, 'nik', 'nik');
     }
 }

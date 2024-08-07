@@ -59,4 +59,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/artisan-command', [App\Http\Controllers\MonthlyEmployeeDataController::class, 'runCommand'])->name('artisan.command');
 
 
-Route::get('/employees/training/{nik}', [TrainingController::class, 'index'])->name('training.index');
+Route::resource('trainings', TrainingController::class);

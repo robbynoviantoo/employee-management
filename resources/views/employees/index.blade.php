@@ -60,24 +60,22 @@
         <h1 class="mb-4 header-title">LIST KARYAWAN</h1>
         <div class="section-table mb-5">
             <div class="d-flex flex-column flex-md-row justify-content-between mb-3">
-                <form action="{{ route('employees.filter') }}" method="GET" class="d-flex mb-2 mb-md-0">
-                    <select id="position-filter" name="position" class="form-control w-auto mr-2">
+                <form action="{{ route('employees.filter') }}" method="GET" class="d-flex mb-2 mb-md-0 align-items-center">
+                    <select id="position-filter" name="position" class="form-control" style="width: auto; margin-right: 10px;">
                         <option value="all">All Jabatan</option>
                         @foreach ($positions as $position)
-                            <option value="{{ $position }}"
-                                {{ old('position', $currentPosition) == $position ? 'selected' : '' }}>{{ $position }}
+                            <option value="{{ $position }}" {{ old('position', $currentPosition) == $position ? 'selected' : '' }}>
+                                {{ $position }}
                             </option>
                         @endforeach
                     </select>
                     <button type="submit" class="btn btn-primary">Apply Filter</button>
                 </form>
                 <div class="d-flex flex-column flex-md-row">
-                    <a href="{{ route('monthly_employee_data.index') }}" class="btn btn-danger mb-2 mb-md-0 mr-md-2">Lihat
-                        Persentase</a>
-                    <a href="{{ route('import.form') }}" class="btn btn-warning mb-2 mb-md-0 mr-md-2">Import from Excel</a>
-                    <a href="{{ route('employees.export') }}" class="btn btn-success mb-2 mb-md-0 mr-md-2">Export to
-                        Excel</a>
-                    {{-- <a href="{{ route('employees.deleteDuplicates') }}" class="btn btn-danger mb-2 mb-md-0">Hapus Duplikat</a> --}}
+                    <a href="{{ route('monthly_employee_data.index') }}" class="btn btn-danger mb-2 btn-group">Lihat Persentase</a>
+                    <a href="{{ route('import.form') }}" class="btn btn-warning mb-2 btn-group">Import from Excel</a>
+                    <a href="{{ route('employees.export') }}" class="btn btn-success mb-2 btn-group">Export to Excel</a>
+                    {{-- <a href="{{ route('employees.deleteDuplicates') }}" class="btn btn-danger mb-2 btn-group">Hapus Duplikat</a> --}}
                 </div>
             </div>
 
@@ -106,7 +104,7 @@
                         @foreach ($employees as $index => $employee)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td><a href="{{ route('training.index', $employee->nik) }}">{{ $employee->nik }}</a></td>
+                                <td><a href="{{ route('trainings.show', $employee->nik) }}">{{ $employee->nik }}</a></td>
                                 <td>{{ $employee->name }}</td>
                                 <td>
                                     <img src="{{ $employee->photo ? asset('storage/app/public/' . $employee->photo) : asset('public/images/default-photo.png') }}"
@@ -133,7 +131,9 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('employees.show', $employee->nik) }}" 
-                                            class="btn btn-info btn-sm mr-1" data-format='[
+                                            class="btn btn-info btn-sm" 
+                                            style="margin-right: 5px;" 
+                                            data-format='[
                                                 {"label": "Photo", "key": "photo"},
                                                 {"label": "NIK", "key": "nik"},
                                                 {"label": "Nama", "key": "name"},
@@ -148,16 +148,18 @@
                                                 {"label": "Status", "key": "status"}]'>Lihat</a>
                                         @auth
                                             <a href="{{ route('employees.edit', ['nik' => $employee->nik]) }}"
-                                                class="btn btn-warning btn-sm mr-1">Edit</a>
-                                        <form action="{{ route('employees.destroy', ['nik' => $employee->nik]) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                        </form>
+                                                class="btn btn-warning btn-sm" 
+                                                style="margin-right: 5px;">Edit</a>
+                                            <form action="{{ route('employees.destroy', ['nik' => $employee->nik]) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                            </form>
                                         @endauth
                                     </div>
                                 </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
