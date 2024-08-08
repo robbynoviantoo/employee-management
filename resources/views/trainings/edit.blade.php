@@ -3,34 +3,60 @@
 @section('title', 'Edit Data Training')
 
 @section('content')
-    <div class="container">
-        <h1 class="mb-4">Edit Data Training untuk NIK {{ $training->first()->nik }}</h1>
+    <div class="container" style="padding: 30px; background-color:#fff; margin-top: 30px; margin-bottom: 30px; border-radius: 30px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+        <h1 class="mb-4">Edit Data </h1>
         <form action="{{ route('trainings.update', $training->first()->nik) }}" method="POST">
             @csrf
             @method('PUT')
+
             <div class="form-group">
                 <label for="nik">NIK</label>
                 <input type="text" id="nik" name="nik" class="form-control" value="{{ $training->first()->nik }}" readonly>
             </div>
 
+            <div class="form-group mt-4">
+                <label for="kategori">Kategori Materi</label>
+                <select id="kategori" name="kategori" class="form-control @error('kategori') is-invalid @enderror"
+                    onchange="filterMateri()">
+                    <option value="">Semua Kategori</option>
+                    @foreach ($kategoriList as $kategori)
+                        <option value="{{ $kategori }}"
+                            {{ old('kategori', $defaultKategori) == $kategori ? 'selected' : '' }}>{{ $kategori }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('kategori')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
             <h3 class="mt-4">Materi Training</h3>
+            <hr>
             <div id="materi-sections">
                 @foreach ($materis as $materi)
-                    <div class="form-group">
-                        <label>{{ $materi->materi_name }}</label>
+                    <div class="form-group materi-item" data-kategori="{{ $materi->kategori }}">
+                        <label class="bold-text">{{ $materi->materi_name }}</label>
                         <input type="hidden" name="materis[]" value="{{ $materi->id }}">
                         <div class="form-row">
                             <div class="col">
                                 <label for="tanggal_{{ $materi->id }}">Tanggal</label>
-                                <input type="date" id="tanggal_{{ $materi->id }}" name="tanggal[{{ $materi->id }}]" class="form-control" value="{{ old('tanggal.' . $materi->id, $materiData[$materi->id]['tanggal']) }}">
+                                <input type="date" id="tanggal_{{ $materi->id }}" name="tanggal[{{ $materi->id }}]"
+                                    class="form-control"
+                                    value="{{ old('tanggal.' . $materi->id, $materiData[$materi->id]['tanggal'] ?? '') }}">
                             </div>
                             <div class="col">
                                 <label for="first_score_{{ $materi->id }}">1st Score</label>
-                                <input type="number" step="0.01" id="first_score_{{ $materi->id }}" name="first_score[{{ $materi->id }}]" class="form-control" value="{{ old('first_score.' . $materi->id, $materiData[$materi->id]['first_score']) }}">
+                                <input type="number" step="0.01" id="first_score_{{ $materi->id }}"
+                                    name="first_score[{{ $materi->id }}]"
+                                    class="form-control"
+                                    value="{{ old('first_score.' . $materi->id, $materiData[$materi->id]['first_score'] ?? '') }}">
                             </div>
                             <div class="col">
                                 <label for="retest_score_{{ $materi->id }}">Retest Score</label>
-                                <input type="number" step="0.01" id="retest_score_{{ $materi->id }}" name="retest_score[{{ $materi->id }}]" class="form-control" value="{{ old('retest_score.' . $materi->id, $materiData[$materi->id]['retest_score']) }}">
+                                <input type="number" step="0.01" id="retest_score_{{ $materi->id }}"
+                                    name="retest_score[{{ $materi->id }}]"
+                                    class="form-control"
+                                    value="{{ old('retest_score.' . $materi->id, $materiData[$materi->id]['retest_score'] ?? '') }}">
                             </div>
                         </div>
                     </div>
@@ -40,4 +66,27 @@
             <button type="submit" class="btn btn-primary mt-3">Simpan</button>
         </form>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Panggil fungsi filterMateri saat halaman dimuat pertama kali
+        filterMateri();
+    });
+
+    function filterMateri() {
+        const selectedKategori = document.getElementById('kategori').value;
+        const materiItems = document.querySelectorAll('.materi-item');
+
+        materiItems.forEach(item => {
+            if (selectedKategori === "" || item.getAttribute('data-kategori') === selectedKategori) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // Event listener untuk dropdown kategori
+    document.getElementById('kategori').addEventListener('change', filterMateri);
+    </script>
 @endsection

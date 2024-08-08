@@ -3,11 +3,12 @@
 @section('title', 'Training Detail')
 
 @section('content')
+
     <div class="container mt-4">
-        <h1 class="mb-4">Detail Training untuk NIK: {{ $employee->nik }}</h1>
 
         <!-- Informasi Karyawan -->
-        <div style="padding: 25px; background-color:#fff; border-radius:20px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+        <div
+            style="padding: 25px; background-color:#fff; border-radius:20px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; margin-bottom:40px; margin-top:40px">
             <div class="row mb-4">
                 <div class="col-md-3">
                     @if ($employee->photo)
@@ -19,8 +20,12 @@
                     @endif
                 </div>
                 <div class="col-md-9">
-                    <h4>{{ $employee->name }}</h4>
+                    <h2 style="font-weight: bold">{{ $employee->name }}</h2>
                     <table class="table table-sm">
+                        <tr>
+                            <td>NIK</td>
+                            <td class="space-before-colon">: {{ $employee->nik }}</td>
+                        </tr>
                         <tr>
                             <td>Position</td>
                             <td class="space-before-colon">: {{ $employee->position }}</td>
@@ -45,7 +50,7 @@
 
                     <!-- Dropdown untuk memilih kategori -->
                     <div class="dropdown mt-3">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Pilihan Kategori
                         </button>
@@ -89,35 +94,51 @@
                     </table>
                 @endforeach
             </div>
+            <!-- Link kembali -->
+            <a href="{{ route('employees.index') }}" class="btn btn-primary mt-3">Kembali ke Daftar Karyawan</a>
+        </div>
         </div>
 
-        <!-- Link kembali -->
-        <a href="{{ route('employees.index') }}" class="btn btn-primary mt-3">Kembali ke Daftar Karyawan</a>
-    </div>
 
     <!-- JavaScript untuk menampilkan tabel sesuai pilihan dropdown -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set default table to show
-            showTable('{{ $categories->first() }}');
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default table to show
+    const firstCategory = '{{ $categories->first() }}';
+    if (firstCategory) {
+        showTable(firstCategory);
+    }
+});
 
-        function showTable(category) {
-            // Sembunyikan semua tabel
-            const tables = document.querySelectorAll('.table-responsive .table');
-            tables.forEach(table => {
-                table.classList.add('d-none');
+function showTable(category) {
+    // Sembunyikan semua tabel
+    const tables = document.querySelectorAll('.table-responsive .table');
+    tables.forEach(table => {
+        table.classList.add('d-none');
+    });
+
+    // Tampilkan tabel yang sesuai dengan kategori yang dipilih
+    const selectedTable = document.getElementById(category.toLowerCase());
+    if (selectedTable) {
+        selectedTable.classList.remove('d-none');
+
+        // Tambahkan sedikit penundaan sebelum scroll
+        setTimeout(() => {
+            selectedTable.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
+        }, 100); // 100ms penundaan
 
-            // Tampilkan tabel yang sesuai dengan kategori yang dipilih
-            const selectedTable = document.getElementById(category.toLowerCase());
-            if (selectedTable) {
-                selectedTable.classList.remove('d-none');
-            }
+        // Jika ada header tetap, tambahkan offset
+        const headerOffset = document.querySelector('header')?.offsetHeight || 0; // Ganti dengan selector header jika diperlukan
+        window.scrollBy(0, -headerOffset);
+    }
 
-            // Update dropdown button text
-            const dropdownButton = document.getElementById('dropdownMenuButton');
-            dropdownButton.textContent = category;
-        }
+    // Update dropdown button text
+    const dropdownButton = document.getElementById('dropdownMenuButton');
+    dropdownButton.textContent = category;
+}
+
     </script>
 @endsection

@@ -25,6 +25,7 @@ Route::get('/employees/{nik}', [EmployeeController::class, 'show'])->name('emplo
 
 // Route untuk mengekspor data karyawan
 Route::get('/export', [EmployeeController::class, 'export'])->name('employees.export');
+Route::get('trainings/export/data', [TrainingController::class, 'export'])->name('trainings.export');
 
 // Route untuk menampilkan form impor
 Route::get('/import-form', [ImportController::class, 'showImportForm'])->name('import.form');

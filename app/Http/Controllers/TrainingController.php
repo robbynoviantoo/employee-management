@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TrainingExport;
 use App\Models\Training;
 use App\Models\Materi;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TrainingController extends Controller
 {
@@ -30,9 +32,6 @@ class TrainingController extends Controller
         return view('trainings.create', compact('employees', 'materis', 'kategoriList', 'defaultKategori'));
     }
     
-    
-    
-
     public function store(Request $request)
     {
         $request->validate([
@@ -89,6 +88,8 @@ class TrainingController extends Controller
         $training = Training::where('nik', $id)->get(); // Mengambil semua data training untuk NIK tertentu
         $employees = Employee::all(); // Ambil semua data employee
         $materis = Materi::all(); // Ambil semua data materi
+        $kategoriList = Materi::distinct('kategori')->pluck('kategori');
+        $defaultKategori = 'Training'; // Default kategori jika ingin ditampilkan pada pemuatan awal
     
         // Format data materi untuk ditampilkan di form edit
         $materiData = [];
@@ -103,7 +104,7 @@ class TrainingController extends Controller
             ];
         }
     
-        return view('trainings.edit', compact('training', 'employees', 'materis', 'materiData'));
+        return view('trainings.edit', compact('training', 'employees', 'materis', 'materiData','kategoriList','defaultKategori'));
     }
     
     public function update(Request $request, $id)
@@ -140,5 +141,10 @@ class TrainingController extends Controller
     {
         $training->delete();
         return redirect()->route('trainings.index')->with('success', 'Data training berhasil dihapus.');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new TrainingExport, 'users.xlsx');
     }
 }

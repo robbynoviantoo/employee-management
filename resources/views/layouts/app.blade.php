@@ -87,6 +87,14 @@
             font-weight: bold;
             font-size: 20px
         }
+
+        /* Margin tambahan untuk tabel di mode mobile */
+        @media (max-width: 767px) {
+            .table-responsive {
+                margin-bottom: 20px;
+                /* Sesuaikan dengan nilai yang diinginkan */
+            }
+        }
     </style>
 </head>
 
@@ -176,6 +184,9 @@
     <script>
         $(document).ready(function() {
             $('#employees-table').DataTable();
+        });
+        $(document).ready(function() {
+            $('#trainingsTable').DataTable();
         });
 
         setTimeout(function() {

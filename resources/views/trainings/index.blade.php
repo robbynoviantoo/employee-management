@@ -3,10 +3,11 @@
 @section('title', 'Data Training')
 
 @section('content')
-    <div class="container">
+    <div class="container" style="padding: 30px; background-color:#fff; margin-top: 30px; margin-bottom: 30px; border-radius: 30px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
         <h1 class="mb-4">Data Training</h1>
         <a href="{{ route('trainings.create') }}" class="btn btn-primary mb-3">Tambah Data Training</a>
-        <table class="table table-bordered">
+        <a href="{{ route('trainings.export') }}" class="btn btn-success mb-3">Export to Excel</a>
+        <table id="trainingsTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>NIK</th>
