@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TrainingExport;
+use App\Models\ChangeLog;
 use App\Models\Training;
 use App\Models\Materi;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TrainingController extends Controller
@@ -34,6 +36,7 @@ class TrainingController extends Controller
     
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'nik' => 'required|string|max:255',
             'tanggal' => 'nullable|array',
@@ -46,8 +49,24 @@ class TrainingController extends Controller
             'materis.*' => 'required|exists:materis,id',
         ]);
     
+        $userId = auth()->id(); // Mendapatkan ID pengguna yang saat ini sedang login
+    
+        // Simpan data lama untuk perbandingan
+        $oldTrainings = Training::where('nik', $request->nik)
+                                ->whereIn('materi_id', $request->materis)
+                                ->get()
+                                ->keyBy('materi_id');
+    
+        // Menyimpan data yang akan diubah
+        $changedEntries = [];
+    
         foreach ($request->materis as $materiId) {
-            Training::updateOrCreate(
+            // Ambil data lama
+            $training = $oldTrainings->get($materiId);
+            $oldValues = $training ? $training->getAttributes() : [];
+    
+            // Update atau buat data training baru
+            $training = Training::updateOrCreate(
                 [
                     'nik' => $request->nik,
                     'materi_id' => $materiId
@@ -58,11 +77,62 @@ class TrainingController extends Controller
                     'retest_score' => $request->retest_score[$materiId] ?? null,
                 ]
             );
+    
+            // Catat perubahan hanya jika data lama ada (update) atau jika data baru dibuat
+            if ($training->wasRecentlyCreated) {
+                $changedEntries[] = [
+                    'change_type' => 'INSERT',
+                    'old_value' => null,
+                    'new_value' => json_encode([
+                        'materi_id' => $materiId,
+                        'tanggal' => $request->tanggal[$materiId] ?? null,
+                        'first_score' => $request->first_score[$materiId] ?? null,
+                        'retest_score' => $request->retest_score[$materiId] ?? null,
+                    ]),
+                    'user_id' => $userId
+                ];
+            } elseif ($training->wasChanged()) {
+                $changedEntries[] = [
+                    'change_type' => 'UPDATE',
+                    'old_value' => json_encode($oldValues),
+                    'new_value' => json_encode([
+                        'materi_id' => $materiId,
+                        'tanggal' => $request->tanggal[$materiId] ?? null,
+                        'first_score' => $request->first_score[$materiId] ?? null,
+                        'retest_score' => $request->retest_score[$materiId] ?? null,
+                    ]),
+                    'user_id' => $userId
+                ];
+            }
         }
     
-        return redirect()->route('trainings.index')->with('success', 'Data training berhasil ditambahkan.');
+        // Catat entri yang dihapus
+        $newMateris = collect($request->materis)->keyBy(fn($item) => $item);
+        $deletedMateris = $oldTrainings->keys()->diff($newMateris->keys());
+    
+        foreach ($deletedMateris as $materiId) {
+            $changedEntries[] = [
+                'change_type' => 'DELETE',
+                'old_value' => json_encode($oldTrainings->get($materiId)->getAttributes()),
+                'new_value' => null,
+                'user_id' => $userId
+            ];
+        }
+    
+        // Simpan semua perubahan ke dalam change_log
+        foreach ($changedEntries as $entry) {
+            ChangeLog::create([
+                'entity_type' => 'training',
+                'entity_id' => $request->nik,
+                'old_value' => $entry['old_value'],
+                'new_value' => $entry['new_value'],
+                'change_type' => $entry['change_type'],
+                'user_id' => $entry['user_id']
+            ]);
+        }
+    
+        return redirect()->route('trainings.index')->with('success', 'Data training berhasil diperbarui.');
     }
-
     public function show($id)
     {
         // Ambil data karyawan berdasarkan ID
@@ -109,6 +179,7 @@ class TrainingController extends Controller
     
     public function update(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
             'nik' => 'required|string|exists:employees,nik',
             'materis.*' => 'required|exists:materis,id',
@@ -122,8 +193,15 @@ class TrainingController extends Controller
         $dates = $request->input('tanggal', []);
         $firstScores = $request->input('first_score', []);
         $retestScores = $request->input('retest_score', []);
+        $userId = Auth::id(); // Mendapatkan ID pengguna yang saat ini sedang login
     
         foreach ($materis as $materi_id) {
+            $training = Training::where('nik', $nik)->where('materi_id', $materi_id)->first();
+    
+            // Ambil nilai lama sebelum update
+            $oldValues = $training ? $training->getAttributes() : [];
+    
+            // Update atau buat data training baru
             Training::updateOrCreate(
                 ['nik' => $nik, 'materi_id' => $materi_id],
                 [
@@ -132,14 +210,60 @@ class TrainingController extends Controller
                     'retest_score' => isset($retestScores[$materi_id]) ? $retestScores[$materi_id] : null,
                 ]
             );
+    
+            // Catat perubahan jika data lama ada
+            if ($training) {
+                ChangeLog::create([
+                    'entity_type' => 'training',
+                    'entity_id' => $nik,
+                    'old_value' => json_encode($oldValues),
+                    'new_value' => json_encode([
+                        'materi_id' => $materi_id,
+                        'tanggal' => isset($dates[$materi_id]) ? $dates[$materi_id] : null,
+                        'first_score' => isset($firstScores[$materi_id]) ? $firstScores[$materi_id] : null,
+                        'retest_score' => isset($retestScores[$materi_id]) ? $retestScores[$materi_id] : null,
+                    ]),
+                    'change_type' => 'UPDATE',
+                    'user_id' => $userId
+                ]);
+            } else {
+                // Catat perubahan jika data baru dibuat
+                ChangeLog::create([
+                    'entity_type' => 'training',
+                    'entity_id' => $nik,
+                    'new_value' => json_encode([
+                        'materi_id' => $materi_id,
+                        'tanggal' => isset($dates[$materi_id]) ? $dates[$materi_id] : null,
+                        'first_score' => isset($firstScores[$materi_id]) ? $firstScores[$materi_id] : null,
+                        'retest_score' => isset($retestScores[$materi_id]) ? $retestScores[$materi_id] : null,
+                    ]),
+                    'change_type' => 'INSERT',
+                    'user_id' => $userId
+                ]);
+            }
         }
     
         return redirect()->route('trainings.index')->with('success', 'Data training berhasil diperbarui.');
     }
 
-    public function destroy(Training $training)
+    public function destroy($nik)
     {
+        $training = Training::where('nik', $nik)->firstOrFail();
+        $userId = Auth::id(); // Mendapatkan ID pengguna yang saat ini sedang login
+    
+        $oldValues = $training->getAttributes();
+    
         $training->delete();
+    
+        // Log perubahan secara manual
+        ChangeLog::create([
+            'entity_type' => 'training',
+            'entity_id' => $nik,
+            'old_value' => json_encode($oldValues),
+            'change_type' => 'DELETE',
+            'user_id' => $userId
+        ]);
+    
         return redirect()->route('trainings.index')->with('success', 'Data training berhasil dihapus.');
     }
 

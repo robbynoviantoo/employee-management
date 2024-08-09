@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EmployeesExport;
+use App\Models\ChangeLog;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -159,7 +161,8 @@ class EmployeeController extends Controller
     public function update(Request $request, $nik)
     {
         $employee = Employee::where('nik', $nik)->firstOrFail();
-
+    
+        // Validasi data input
         $request->validate([
             'nik' => 'required|numeric',
             'name' => 'required|string|max:255',
@@ -174,34 +177,45 @@ class EmployeeController extends Controller
             'dateout' => 'nullable|date',
             'status' => 'required|string'
         ]);
-
-        $employee->nik = $request->input('nik');
-        $employee->name = $request->input('name');
-        $employee->position = $request->input('position');
-        $employee->building = $request->input('building');
-        $employee->area = $request->input('area');
-        $employee->cell = $request->input('cell');
-        $employee->phone = $request->input('phone');
-        $employee->idpass = $request->input('idpass');
-        $employee->datein = $request->input('datein');
-        $employee->dateout = $request->input('dateout');
-        $employee->status = $request->input('status');
-
+    
+        // Simpan nilai lama sebelum diubah
+        $oldValues = $employee->toArray();
+    
+        // Perbarui data karyawan
+        $employee->fill($request->only([
+            'nik', 'name', 'position', 'building', 'area', 'cell', 'phone', 'idpass', 'datein', 'dateout', 'status'
+        ]));
+    
+        // Tangani file gambar jika ada
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
             if ($employee->photo) {
                 Storage::delete('public/' . $employee->photo);
             }
-
+    
             // Simpan gambar baru
             $path = $request->file('image')->store('images', 'public');
             $employee->photo = $path;
         }
-
+    
         $employee->save();
-
+    
+        // Simpan nilai baru setelah diperbarui
+        $newValues = $employee->fresh()->toArray();
+    
+        // Log perubahan
+        ChangeLog::create([
+            'entity_type' => 'employee',
+            'entity_id' => $employee->nik,
+            'old_value' => json_encode($oldValues),
+            'new_value' => json_encode($newValues),
+            'change_type' => 'UPDATE',
+            'user_id' => Auth::id(), // Tangkap ID pengguna saat ini
+        ]);
+    
         return redirect()->route('employees.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
+    
 
     public function destroy($nik)
     {
