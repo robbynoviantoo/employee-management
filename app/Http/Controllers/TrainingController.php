@@ -49,7 +49,7 @@ class TrainingController extends Controller
             'materis.*' => 'required|exists:materis,id',
         ]);
     
-        $userId = auth()->id(); // Mendapatkan ID pengguna yang saat ini sedang login
+        $userId = Auth::id(); // Mendapatkan ID pengguna yang saat ini sedang login
     
         // Simpan data lama untuk perbandingan
         $oldTrainings = Training::where('nik', $request->nik)
