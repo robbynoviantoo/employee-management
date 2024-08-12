@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TrainingExport;
+use App\Imports\TrainingImport;
 use App\Models\ChangeLog;
 use App\Models\Training;
 use App\Models\Materi;
@@ -248,27 +249,52 @@ class TrainingController extends Controller
 
     public function destroy($nik)
     {
-        $training = Training::where('nik', $nik)->firstOrFail();
-        $userId = Auth::id(); // Mendapatkan ID pengguna yang saat ini sedang login
+        // Retrieve all training records associated with the given NIK
+        $trainings = Training::where('nik', $nik)->get();
     
-        $oldValues = $training->getAttributes();
+        if ($trainings->isEmpty()) {
+            return redirect()->route('trainings.index')->with('error', 'No training records found for this NIK.');
+        }
     
-        $training->delete();
+        $userId = Auth::id(); // Get the ID of the currently logged-in user
     
-        // Log perubahan secara manual
-        ChangeLog::create([
-            'entity_type' => 'training',
-            'entity_id' => $nik,
-            'old_value' => json_encode($oldValues),
-            'change_type' => 'DELETE',
-            'user_id' => $userId
-        ]);
+        // Log the deletion of each training record
+        foreach ($trainings as $training) {
+            $oldValues = $training->getAttributes();
+            $training->delete();
     
-        return redirect()->route('trainings.index')->with('success', 'Data training berhasil dihapus.');
+            // Log the deletion in the change log
+            ChangeLog::create([
+                'entity_type' => 'training',
+                'entity_id' => $nik,
+                'old_value' => json_encode($oldValues),
+                'new_value' => null,
+                'change_type' => 'DELETE',
+                'user_id' => $userId
+            ]);
+        }
+    
+        return redirect()->route('trainings.index')->with('success', 'All training records for the specified NIK have been deleted.');
     }
 
     public function export() 
     {
         return Excel::download(new TrainingExport, 'users.xlsx');
+    }
+
+    public function trainingForm()
+    {
+        return view('trainings.import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new TrainingImport, $request->file('file'));
+
+        return redirect('/')->with('success', 'Data karyawan berhasil diimpor.');
     }
 }

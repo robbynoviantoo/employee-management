@@ -7,6 +7,7 @@
         <h1 class="mb-4">Data Training</h1>
         <a href="{{ route('trainings.create') }}" class="btn btn-primary mb-3">Tambah Data Training</a>
         <a href="{{ route('trainings.export') }}" class="btn btn-success mb-3">Export to Excel</a>
+        <a href="{{ route('trainings.form') }}" class="btn btn-warning mb-3">Import to Excel</a>
         <table id="trainingsTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
