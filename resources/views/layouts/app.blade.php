@@ -111,11 +111,16 @@
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+        
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+        
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <!-- Tautan Data Training ditampilkan untuk semua pengguna -->
+                        <li class="nav-item text-center">
+                            <a class="btn" href="{{ route('trainings.index') }}">{{ __('Data Training') }}</a>
+                        </li>
+                        
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -129,22 +134,20 @@
                         @else
                             <li class="nav-item text-center">
                                 <a class="btn" href="{{ route('employees.create') }}">{{ __('Tambah Karyawan') }}</a>
-                                <a class="btn" href="{{ route('trainings.index') }}">{{ __('Data Training') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ Auth::user()->name }}
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ Auth::user()->name }}
                                 </a>
-
+        
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        style="display: none;">
+        
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
@@ -154,6 +157,7 @@
                 </div>
             </div>
         </nav>
+        
         @if (session('success'))
             <div class="alert">
                 {{ session('success') }}
