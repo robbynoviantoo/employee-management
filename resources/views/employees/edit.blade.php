@@ -23,6 +23,11 @@
                             value="{{ $employee->name }}" required>
                     </div>
                     <div class="form-group">
+                        <label for="gender">Jenis Kelamin:</label>
+                        <input type="text" class="form-control" name="gender" id="gender"
+                            value="{{ $employee->gender }}" required>
+                    </div>
+                    <div class="form-group">
                         <label for="image">Gambar:</label>
                         <input type="file" class="form-control" name="image" id="image">
                         @if ($employee->image)

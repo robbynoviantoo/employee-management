@@ -18,6 +18,21 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/employees/{nik}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
     Route::put('/employees/{nik}', [EmployeeController::class, 'update'])->name('employees.update');
     Route::delete('/employees/{nik}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+    Route::get('/trainings/create', [TrainingController::class, 'create'])->name('trainings.create');
+
+    // Route to store a newly created training
+    Route::post('/trainings', [TrainingController::class, 'store'])->name('trainings.store');
+
+    // Route to display a specific training (show)
+
+    // Route to show the form for editing a specific training
+    Route::get('/trainings/{id}/edit', [TrainingController::class, 'edit'])->name('trainings.edit');
+
+    // Route to update a specific training
+    Route::put('/trainings/{id}', [TrainingController::class, 'update'])->name('trainings.update');
+
+    // Route to delete a specific training
+    Route::delete('/trainings/{id}', [TrainingController::class, 'destroy'])->name('trainings.destroy');
 });
 
 // Route for displaying employee details
@@ -64,23 +79,3 @@ Route::post('/artisan-command', [App\Http\Controllers\MonthlyEmployeeDataControl
 // Resource route for training management
 Route::get('/trainings', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/trainings/{id}', [TrainingController::class, 'show'])->name('trainings.show');
-Route::group(['middleware' => ['auth']], function () {
-    // Route to display the list of trainings
-
-    // Route to show the form for creating a new training
-    Route::get('/trainings/create', [TrainingController::class, 'create'])->name('trainings.create');
-
-    // Route to store a newly created training
-    Route::post('/trainings', [TrainingController::class, 'store'])->name('trainings.store');
-
-    // Route to display a specific training (show)
-
-    // Route to show the form for editing a specific training
-    Route::get('/trainings/{id}/edit', [TrainingController::class, 'edit'])->name('trainings.edit');
-
-    // Route to update a specific training
-    Route::put('/trainings/{id}', [TrainingController::class, 'update'])->name('trainings.update');
-
-    // Route to delete a specific training
-    Route::delete('/trainings/{id}', [TrainingController::class, 'destroy'])->name('trainings.destroy');
-});

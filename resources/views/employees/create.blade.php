@@ -34,6 +34,11 @@
                                     value="{{ old('name') }}" placeholder="Masukkan nama" required>
                             </div>
                             <div class="form-group">
+                                <label for="gender" class="form-label">Jenis Kelamin</label>
+                                <input type="text" class="form-control" name="gender" id="gender"
+                                    value="{{ old('gender') }}" placeholder="Masukkan nama" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="photo" class="form-label">Foto</label>
                                 <input class="form-control-file" type="file" name="photo" id="photo">
                             </div>

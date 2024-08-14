@@ -87,6 +87,7 @@
                             <th>No</th>
                             <th>NIK</th>
                             <th>Nama</th>
+                            <th>Gender</th>
                             <th>Foto</th>
                             <th>Jabatan</th>
                             <th>Gedung</th>
@@ -106,6 +107,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td><a href="{{ route('trainings.show', $employee->nik) }}">{{ $employee->nik }}</a></td>
                                 <td>{{ $employee->name }}</td>
+                                <td>{{$employee->gender}}</td>
                                 <td>
                                     <img src="{{ $employee->photo ? asset('storage/app/public/' . $employee->photo) : asset('public/images/default-photo.png') }}"
                                         alt="Foto" width="50">
@@ -137,6 +139,7 @@
                                                 {"label": "Photo", "key": "photo"},
                                                 {"label": "NIK", "key": "nik"},
                                                 {"label": "Nama", "key": "name"},
+                                                {"label": "Gender", "key": "gender"},
                                                 {"label": "Jabatan", "key": "position"},
                                                 {"label": "Gedung", "key": "building"},
                                                 {"label": "Area", "key": "area"},
