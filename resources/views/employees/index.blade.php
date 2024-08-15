@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container-fluid mt-5 ">
-        <h1 class="mb-4 header-title">INFORMATION</h1>
+        <h1 class="mb-4 header-title">INFORMASI</h1>
         <div class="row mb-4">
             <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
                 <div class="card h-100 costum-rounded">
