@@ -120,6 +120,9 @@
                         <li class="nav-item text-center">
                             <a class="btn" href="{{ route('trainings.index') }}">{{ __('Data Training') }}</a>
                         </li>
+                        <li class="nav-item text-center">
+                            <a class="btn" href="{{ route('gedung.index') }}">{{ __('Data Gedung') }}</a>
+                        </li>
                         
                         <!-- Authentication Links -->
                         @guest

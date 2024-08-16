@@ -7,6 +7,7 @@ use App\Models\ChangeLog;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Gedung;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -97,13 +98,20 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $buildings = Gedung::select('gedung')->distinct()->get();
+
+        $areas = Gedung::select('gedung', 'area')->get()->groupBy('gedung');
+
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
-        return view('employees.create');
+        $selectedBuilding = $request->old('building', '');
+        $selectedAreas = $selectedBuilding ? $areas[$selectedBuilding] ?? [] : [];
+
+    return view('employees.create', compact('buildings', 'areas', 'selectedBuilding', 'selectedAreas'));
     }
 
     public function store(Request $request)
@@ -355,5 +363,11 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')->with('success', 'Data duplikat berhasil dihapus.');
     }
+
+    public function getAreas($building)
+{
+    $areas = Gedung::where('gedung', $building)->pluck('area');
+    return response()->json($areas);
+}
 
 }

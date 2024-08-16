@@ -3,6 +3,7 @@
 @section('title', 'Tambah Karyawan')
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     </nav>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -31,12 +32,12 @@
                             <div class="form-group">
                                 <label for="name" class="form-label">Nama</label>
                                 <input type="text" class="form-control" name="name" id="name"
-                                    value="{{ old('name') }}" placeholder="Masukkan jenis kelamin" required>
+                                    value="{{ old('name') }}" placeholder="Masukkan nama" required>
                             </div>
                             <div class="form-group">
                                 <label for="gender" class="form-label">Jenis Kelamin</label>
                                 <input type="text" class="form-control" name="gender" id="gender"
-                                    value="{{ old('gender') }}" placeholder="Masukkan nama" required>
+                                    value="{{ old('gender') }}" placeholder="Masukkan jenis kelamin" required>
                             </div>
                             <div class="form-group">
                                 <label for="photo" class="form-label">Foto</label>
@@ -49,13 +50,21 @@
                             </div>
                             <div class="form-group">
                                 <label for="building" class="form-label">Gedung</label>
-                                <input type="text" class="form-control" name="building" id="building"
-                                    value="{{ old('building') }}" placeholder="Masukkan gedung" required>
+                                <select class="form-control" name="building" id="building" required>
+                                    <option value="">Pilih Gedung</option>
+                                    @foreach ($buildings as $building)
+                                        <option value="{{ $building->gedung }}">{{ $building->gedung }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="area" class="form-label">Area</label>
-                                <input type="text" class="form-control" name="area" id="area"
-                                    value="{{ old('area') }}" placeholder="Masukkan area" required>
+                                <label for="area" id="areaLabel" class="form-label">Area</label>
+                                <select class="form-control" name="area" id="area" style="display: none;" required>
+                                    <option value="">Pilih Area</option>
+                                </select>
+                                <div id="areaNotification" class="form-text text-danger" style="display: none;">
+                                    Harap pilih gedung terlebih dahulu.
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="cell" class="form-label">Cell</label>
@@ -98,19 +107,81 @@
         </div>
     </div>
     <script>
-        document.getElementById('phone').addEventListener('input', function(e) {
-            const phoneInput = e.target;
-            const phoneValue = phoneInput.value;
-            const phoneHelpBlock = document.getElementById('phoneHelpBlock');
+        document.addEventListener('DOMContentLoaded', function() {
+            const buildingSelect = document.getElementById('building');
+            const areaSelect = document.getElementById('area');
+            const areaLabel = document.getElementById('areaLabel');
+            const areaNotification = document.getElementById('areaNotification');
 
-            if (!/^\d*$/.test(phoneValue)) {
-                phoneHelpBlock.textContent = 'Nomor handphone hanya boleh berisi angka!';
-                phoneHelpBlock.style.color = 'red';
-                phoneHelpBlock.style.display = 'block';
-            } else {
-                phoneHelpBlock.textContent = '';
-                phoneHelpBlock.style.display = 'none';
-            }
+            // Sembunyikan label dan dropdown area saat halaman dimuat
+            areaLabel.style.display = 'none';
+            areaSelect.style.display = 'none';
+            areaNotification.style.display = 'none';
+
+            buildingSelect.addEventListener('change', function() {
+                const building = this.value;
+
+                // Kosongkan area dropdown sebelum mengisi
+                areaSelect.innerHTML = '<option value="">Pilih Area</option>';
+
+                if (building) {
+                    // Tampilkan label dan dropdown area, sembunyikan pesan notifikasi
+                    areaLabel.style.display = 'block';
+                    areaSelect.style.display = 'block';
+                    areaNotification.style.display = 'none';
+
+                    fetch(`http://10.20.100.70/employee-management/areas/${building}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Received data:', data); // Debugging
+                            if (Array.isArray(data)) {
+                                data.forEach(area => {
+                                    const option = document.createElement('option');
+                                    option.value = area;
+                                    option.textContent = area;
+                                    areaSelect.appendChild(option);
+                                });
+                            } else {
+                                console.error('Data is not an array:', data);
+                            }
+                        })
+                        .catch(error => console.error('Error fetching areas:', error));
+                } else {
+                    // Sembunyikan label dan dropdown area jika gedung tidak dipilih
+                    areaLabel.style.display = 'none';
+                    areaSelect.style.display = 'none';
+                    areaNotification.style.display = 'none'; // Sembunyikan pesan notifikasi
+                }
+            });
+
+            areaSelect.addEventListener('change', function() {
+                const building = buildingSelect.value;
+
+                if (!building) {
+                    areaNotification.style.display = 'block'; // Tampilkan pesan notifikasi
+                    this.value = ''; // Kosongkan dropdown area
+                }
+            });
+
+            document.getElementById('phone').addEventListener('input', function(e) {
+                const phoneInput = e.target;
+                const phoneValue = phoneInput.value;
+                const phoneHelpBlock = document.getElementById('phoneHelpBlock');
+
+                if (!/^\d*$/.test(phoneValue)) {
+                    phoneHelpBlock.textContent = 'Nomor handphone hanya boleh berisi angka!';
+                    phoneHelpBlock.style.color = 'red';
+                    phoneHelpBlock.style.display = 'block';
+                } else {
+                    phoneHelpBlock.textContent = '';
+                    phoneHelpBlock.style.display = 'none';
+                }
+            });
         });
     </script>
 @endsection

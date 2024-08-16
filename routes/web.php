@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MonthlyEmployeeDataController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\GedungController;
 use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,11 @@ Route::get('trainings/export/data', [TrainingController::class, 'export'])->name
 Route::get('/training/form', [TrainingController::class, 'trainingForm'])->name('trainings.form');
 Route::post('trainings/import/data', [TrainingController::class, 'import'])->name('trainings.import');
 
+Route::resource('gedung', GedungController::class);
+Route::get('/import', [GedungController::class, 'formImport'])->name('gedung.import');
+Route::post('gedung/import/data', [GedungController::class, 'import'])->name('gedung.importData');
+Route::get('/areas/{building}', [EmployeeController::class, 'getAreas'])->name('areas.get');
+
 // Routes for import functionality
 Route::get('/import-form', [ImportController::class, 'showImportForm'])->name('import.form');
 Route::post('/import', [ImportController::class, 'import'])->name('import.process');
@@ -79,3 +85,5 @@ Route::post('/artisan-command', [App\Http\Controllers\MonthlyEmployeeDataControl
 // Resource route for training management
 Route::get('/trainings', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/trainings/{id}', [TrainingController::class, 'show'])->name('trainings.show');
+
+
