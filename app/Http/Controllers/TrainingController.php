@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\TrainingExport;
 use App\Imports\TrainingImport;
+use App\Models\Absence;
 use App\Models\ChangeLog;
 use App\Models\Training;
 use App\Models\Materi;
@@ -140,17 +141,32 @@ class TrainingController extends Controller
         $employee = Employee::findOrFail($id);
     
         // Ambil data training yang terkait dengan karyawan
-        $trainingData = Training::where('nik', $id)->get();
+        $trainingData = Training::where('nik', $employee->nik)->get();
     
         // Ambil materi dan kategori
         $materis = Materi::all();
-    
-        // Dapatkan kategori unik dari materi
         $categories = $materis->pluck('kategori')->unique();
     
+        // Ambil absensi untuk karyawan selama satu tahun
+        $year = now()->year; // Tahun saat ini
+    
+        $sickCount = Absence::where('nik', $employee->nik)
+                            ->where('alasan', 'Sakit')
+                            ->whereYear('tanggal', $year)
+                            ->count();
+        $alphaCount = Absence::where('nik', $employee->nik)
+                             ->where('alasan', 'Alpha')
+                             ->whereYear('tanggal', $year)
+                             ->count();
+        $leaveCount = Absence::where('nik', $employee->nik)
+                             ->where('alasan', 'Cuti')
+                             ->whereYear('tanggal', $year)
+                             ->count();
+    
         // Kirim data ke tampilan
-        return view('trainings.show', compact('employee', 'trainingData', 'materis', 'categories'));
+        return view('trainings.show', compact('employee', 'trainingData', 'materis', 'categories', 'sickCount', 'alphaCount', 'leaveCount'));
     }
+    
     
 
     public function edit($id)

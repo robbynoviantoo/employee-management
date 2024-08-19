@@ -150,6 +150,9 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Tautan Data Training ditampilkan untuk semua pengguna -->
                         <li class="nav-item text-center">
+                            <a class="btn" href="{{ route('absences.index') }}">{{ __('Absensi') }}</a>
+                        </li>
+                        <li class="nav-item text-center">
                             <a class="btn" href="{{ route('sto.index') }}">{{ __('STO') }}</a>
                         </li>
                         <li class="nav-item text-center">
@@ -230,6 +233,9 @@
         });
         $(document).ready(function() {
             $('#trainingsTable').DataTable();
+        });
+        $(document).ready(function() {
+            $('#absences-table').DataTable();
         });
 
         setTimeout(function() {

@@ -3,6 +3,14 @@
 @section('title', 'Training Detail')
 
 @section('content')
+<style>
+    .table, .table th, .table td {
+        border: 1px solid #dee2e6; /* Warna border dapat disesuaikan */
+    }
+    .table th, .table td {
+        padding: 0.3rem; /* Jarak padding di dalam sel */
+    }
+</style>
 
     <div class="container mt-4">
 
@@ -19,12 +27,16 @@
                             class="img-fluid img-thumbnail custom-img">
                     @endif
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-5">
                     <h2 style="font-weight: bold">{{ $employee->name }}</h2>
-                    <table class="table table-sm">
+                    <table class="table">
                         <tr>
                             <td>NIK</td>
                             <td class="space-before-colon">: {{ $employee->nik }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Lahir</td>
+                            <td class="space-before-colon">: {{ \Carbon\Carbon::parse($employee->tanggallahir)->format('d-m-Y') }}</td>
                         </tr>
                         <tr>
                             <td>Position</td>
@@ -47,20 +59,37 @@
                             <td class="space-before-colon">: {{ '0' . $employee->phone }}</td>
                         </tr>
                     </table>
+                </div>
+                <div class="col-md-3">
+                    <h2 style="font-weight: bold">Absensi 1 Tahun</h2>
+                    <table class="table">
+                        <tr>
+                            <td>Sakit</td>
+                            <td>{{ $sickCount }}</td>
+                        </tr>
+                        <tr>
+                            <td>Alpha</td>
+                            <td>{{ $alphaCount }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cuti</td>
+                            <td>{{ $leaveCount }}</td>
+                        </tr>
+                    </table>
 
                     <!-- Dropdown untuk memilih kategori -->
-                    <div class="dropdown mt-3">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Pilihan Kategori
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            @foreach ($categories as $category)
-                                <li><a class="dropdown-item" href="#"
-                                        onclick="showTable('{{ $category }}')">{{ $category }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
+                </div>
+                <div class="dropdown mt-3">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Pilihan Kategori
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @foreach ($categories as $category)
+                            <li><a class="dropdown-item" href="#"
+                                    onclick="showTable('{{ $category }}')">{{ $category }}</a></li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsenceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImportController;
@@ -91,5 +92,8 @@ Route::get('/sto', [STOController::class, 'index'])->name('sto.index');
 // routes/web.php
 
 Route::get('/sto/{building}', [StoController::class, 'viewBuilding'])->name('building.view');
+
+Route::resource('absences', AbsenceController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+
 
 

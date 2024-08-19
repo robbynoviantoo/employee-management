@@ -9,18 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('absences', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal');
+            $table->string('nik');
+            $table->string('alasan')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
+
+            // Tambahkan foreign key yang terhubung ke tabel employees
+            $table->foreign('nik')->references('nik')->on('employees')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('absences');
     }
