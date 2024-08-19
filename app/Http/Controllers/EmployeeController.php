@@ -122,7 +122,9 @@ class EmployeeController extends Controller
 
         $validatedData = $request->validate([
             'nik' => 'required',
+            'manager_id' => 'nullable',
             'name' => 'required',
+            'tanggallahir' => 'nullable|date',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048',
             'position' => 'required',
             'building' => 'required',
@@ -163,9 +165,15 @@ class EmployeeController extends Controller
     public function edit($nik)
     {
         $employee = Employee::where('nik', $nik)->firstOrFail();
-        return view('employees.edit', compact('employee'));
+        $buildings = Gedung::select('gedung')->distinct()->get();
+        $areas = Gedung::select('gedung', 'area')->get()->groupBy('gedung');
+    
+        // Pass the selected building and its areas to the view
+        $selectedBuilding = $employee->building;
+        $selectedAreas = $selectedBuilding ? $areas[$selectedBuilding] ?? [] : [];
+    
+        return view('employees.edit', compact('employee', 'buildings', 'areas', 'selectedBuilding', 'selectedAreas'));
     }
-
     public function update(Request $request, $nik)
     {
         $employee = Employee::where('nik', $nik)->firstOrFail();
@@ -173,7 +181,9 @@ class EmployeeController extends Controller
         // Validasi data input
         $request->validate([
             'nik' => 'required|numeric',
+            'manager_id' => 'nullable|numeric',
             'name' => 'required|string|max:255',
+            'tanggallahir' => 'nullable|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048',
             'position' => 'required|string|max:255',
             'building' => 'nullable|string|max:255',
@@ -191,7 +201,7 @@ class EmployeeController extends Controller
     
         // Perbarui data karyawan
         $employee->fill($request->only([
-            'nik', 'name', 'position', 'building', 'area', 'cell', 'phone', 'idpass', 'datein', 'dateout', 'status'
+            'nik', 'manager_id', 'name','tanggallahir', 'position', 'building', 'area', 'cell', 'phone', 'idpass', 'datein', 'dateout', 'status'
         ]));
     
         // Tangani file gambar jika ada

@@ -17,6 +17,33 @@
             text-align: center;
         }
 
+            /* CSS untuk menambahkan ikon anak panah ke dropdown */
+    .custom-select {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .custom-select select {
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMDAgMTQiIHZpZXdCb3g9IjAgMCAxMDAgMTQiIHdpZ2Q9IjEwMCIgaGVpZ2h0PSIxNCI+PHBhdGggZD0iTTAgMCA2IDYuOTc5bDIuOTc5IDYuOTc5LTEuMDIgMy40MjktMS4wMTIgMy40MjktMS4wMTIgNy43OTctNy43OTcgNi45NzkiIHN0cm9rZS13aWR0aD0iMnB4IiBzdHJva2UtZGFzaGFycmF5PSJyb3VuZCIgc3Ryb2tlLWxpbmVjY2hhcnJhPSJyb3VuZCIgc3Ryb2tlLW1vZGU9InJvdyIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2Utb3BhY2l0eT0iLjgiIHN0cm9rZS1saW5lY2hhcnJhPSJyb3VuZCIgc3Ryb2tlLXN0eWxlPSJub25lIi8+PC9zdmc+');
+        background-position: right 0.7em center;
+        background-repeat: no-repeat;
+        background-size: 0.65em auto;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        padding: 0.5em 2.5em 0.5em 0.5em;
+        font-size: 1em;
+        line-height: 1.2;
+        color: #333;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .custom-select select:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
         .center-content {
             display: flex;
             justify-content: center;
@@ -87,6 +114,11 @@
             font-weight: bold;
             font-size: 20px
         }
+        
+        .form-label{
+            font-weight: bold;
+            font-size: 18px;
+        }
 
         /* Margin tambahan untuk tabel di mode mobile */
         @media (max-width: 767px) {
@@ -117,6 +149,9 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Tautan Data Training ditampilkan untuk semua pengguna -->
+                        <li class="nav-item text-center">
+                            <a class="btn" href="{{ route('sto.index') }}">{{ __('STO') }}</a>
+                        </li>
                         <li class="nav-item text-center">
                             <a class="btn" href="{{ route('trainings.index') }}">{{ __('Data Training') }}</a>
                         </li>
@@ -186,6 +221,7 @@
     <script src="{{ asset('resources/js/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('resources/js/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('resources/js/show.js') }}"></script>
+    <script src="{{ asset('resources/js/delete.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>

@@ -12,14 +12,14 @@
         @endif
         <table class="table table-bordered">
             <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Gedung</th>
                 <th>Area</th>
                 <th width="280px">Aksi</th>
             </tr>
-            @foreach ($gedung as $item)
+            @foreach ($gedung as $index => $item)
             <tr>
-                <td>{{ $item->id }}</td>
+                <td>{{ $index + 1  }}</td>
                 <td>{{ $item->gedung }}</td>
                 <td>{{ $item->area }}</td>
                 <td>

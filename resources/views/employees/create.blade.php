@@ -3,13 +3,12 @@
 @section('title', 'Tambah Karyawan')
 
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     </nav>
-    <div class="container mt-5">
+    <div class="container mt-4 mb-3">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow-sm">
-                    <div class="card-header navbar-dark bg-dark text-white">
+                    <div class="card-header text-black ">
                         <h3 class="mb-0">Tambah Karyawan</h3>
                     </div>
                     <div class="card-body">
@@ -23,83 +22,85 @@
                             </div>
                         @endif
                         <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group">
-                                <label for="nik" class="form-label">NIK</label>
-                                <input type="text" class="form-control" name="nik" id="nik"
-                                    value="{{ old('nik') }}" placeholder="Masukkan NIK" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="name" class="form-label">Nama</label>
-                                <input type="text" class="form-control" name="name" id="name"
-                                    value="{{ old('name') }}" placeholder="Masukkan nama" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="gender" class="form-label">Jenis Kelamin</label>
-                                <input type="text" class="form-control" name="gender" id="gender"
-                                    value="{{ old('gender') }}" placeholder="Masukkan jenis kelamin" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="photo" class="form-label">Foto</label>
-                                <input class="form-control-file" type="file" name="photo" id="photo">
-                            </div>
-                            <div class="form-group">
-                                <label for="position" class="form-label">Jabatan</label>
-                                <input type="text" class="form-control" name="position" id="position"
-                                    value="{{ old('position') }}" placeholder="Masukkan jabatan" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="building" class="form-label">Gedung</label>
-                                <select class="form-control" name="building" id="building" required>
-                                    <option value="">Pilih Gedung</option>
-                                    @foreach ($buildings as $building)
-                                        <option value="{{ $building->gedung }}">{{ $building->gedung }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="area" id="areaLabel" class="form-label">Area</label>
-                                <select class="form-control" name="area" id="area" style="display: none;" required>
-                                    <option value="">Pilih Area</option>
-                                </select>
-                                <div id="areaNotification" class="form-text text-danger" style="display: none;">
-                                    Harap pilih gedung terlebih dahulu.
+                                @csrf
+                                <div class="form-group">
+                                    <label for="nik" class="form-label">NIK</label>
+                                    <input type="text" class="form-control" name="nik" id="nik"
+                                        value="{{ old('nik') }}" placeholder="Masukkan NIK" required>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cell" class="form-label">Cell</label>
-                                <input type="text" class="form-control" name="cell" id="cell"
-                                    value="{{ old('cell') }}" placeholder="Masukkan cell" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="idpass" class="form-label">ID Pass</label>
-                                <input type="text" class="form-control" name="idpass" id="idpass"
-                                    value="{{ old('idpass') }}" placeholder="Masukkan ID Pass">
-                            </div>
-                            <div class="form-group">
-                                <label for="phone" class="form-label">No. Handphone</label>
-                                <input type="tel" class="form-control" name="phone" id="phone"
-                                    value="{{ old('phone') }}" placeholder="Masukkan no. handphone" required>
-                                <small id="phoneHelpBlock" class="form-text text-muted" style="display: none;"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="datein" class="form-label">Tanggal Masuk</label>
-                                <input type="date" class="form-control" name="datein" id="datein"
-                                    value="{{ old('datein', date('Y-m-d')) }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="dateout" class="form-label">Tanggal Resign</label>
-                                <input type="date" class="form-control" name="dateout" id="dateout"
-                                    value="{{ old('dateout') }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-control" name="status" id="status" required>
-                                    <option value="On Work">On Work</option>
-                                    <option value="Resigned">Resigned</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Simpan</button>
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" name="name" id="name"
+                                        value="{{ old('name') }}" placeholder="Masukkan nama" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender" class="form-label">Jenis Kelamin</label>
+                                    <input type="text" class="form-control" name="gender" id="gender"
+                                        value="{{ old('gender') }}" placeholder="Masukkan jenis kelamin" required>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="photo" class="form-label">Foto</label>
+                                    <input class="form-control-file" type="file" name="photo" id="photo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="position" class="form-label">Jabatan</label>
+                                    <input type="text" class="form-control" name="position" id="position"
+                                        value="{{ old('position') }}" placeholder="Masukkan jabatan" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="building" class="form-label">Gedung</label>
+                                    <div class="custom-select">
+                                        <select name="building" id="building" required>
+                                            <option value="">Pilih Gedung</option>
+                                            @foreach ($buildings as $building)
+                                                <option value="{{ $building->gedung }}">{{ $building->gedung }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="area" id="areaLabel" class="form-label">Area</label>
+                                    <select class="form-control" name="area" id="area" style="display: none;" required>
+                                        <option value="">Pilih Area</option>
+                                    </select>
+                                    <div id="areaNotification" class="form-text text-danger" style="display: none;">
+                                        Harap pilih gedung terlebih dahulu.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cell" class="form-label">Cell</label>
+                                    <input type="text" class="form-control" name="cell" id="cell"
+                                        value="{{ old('cell') }}" placeholder="Masukkan cell" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="idpass" class="form-label">ID Pass</label>
+                                    <input type="text" class="form-control" name="idpass" id="idpass"
+                                        value="{{ old('idpass') }}" placeholder="Masukkan ID Pass">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">No. Handphone</label>
+                                    <input type="tel" class="form-control" name="phone" id="phone"
+                                        value="{{ old('phone') }}" placeholder="Masukkan no. handphone" required>
+                                    <small id="phoneHelpBlock" class="form-text text-muted" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="datein" class="form-label">Tanggal Masuk</label>
+                                    <input type="date" class="form-control" name="datein" id="datein"
+                                        value="{{ old('datein', date('Y-m-d')) }}" required>
+                                </div>
+                                {{-- <div class="form-group">
+                                    <label for="dateout" class="form-label">Tanggal Resign</label>
+                                    <input type="date" class="form-control" name="dateout" id="dateout"
+                                        value="{{ old('dateout') }}">
+                                </div> --}}
+                                <div class="form-group">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" name="status" id="status" required>
+                                        <option value="On Work">On Work</option>
+                                        <option value="Resigned">Resigned</option>
+                                    </select>
+                                </div>
+                            <button type="submit" class="btn btn-primary btn-block mt-3">Simpan</button>
                         </form>
                     </div>
                 </div>

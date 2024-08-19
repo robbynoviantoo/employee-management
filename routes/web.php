@@ -6,6 +6,7 @@ use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MonthlyEmployeeDataController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\GedungController;
+use App\Http\Controllers\STOController;
 use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Auth;
 
@@ -85,5 +86,10 @@ Route::post('/artisan-command', [App\Http\Controllers\MonthlyEmployeeDataControl
 // Resource route for training management
 Route::get('/trainings', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/trainings/{id}', [TrainingController::class, 'show'])->name('trainings.show');
+
+Route::get('/sto', [STOController::class, 'index'])->name('sto.index');
+// routes/web.php
+
+Route::get('/sto/{building}', [StoController::class, 'viewBuilding'])->name('building.view');
 
 

@@ -87,6 +87,7 @@
                             <th>No</th>
                             <th>NIK</th>
                             <th>Nama</th>
+                            <th>Tanggal Lahir</th>
                             <th>Gender</th>
                             <th>Foto</th>
                             <th>Jabatan</th>
@@ -94,7 +95,6 @@
                             <th>Area</th>
                             <th>Cell</th>
                             <th>ID Pass</th>
-                            <th>No.Handphone</th>
                             <th>Tanggal Masuk</th>
                             <th>Tanggal Resign</th>
                             <th>Status</th>
@@ -107,6 +107,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td><a href="{{ route('trainings.show', $employee->nik) }}">{{ $employee->nik }}</a></td>
                                 <td>{{ $employee->name }}</td>
+                                <td>{{ \Carbon\Carbon::parse($employee->tanggallahir)->format('d-m-Y') }}</td>
                                 <td>{{$employee->gender}}</td>
                                 <td>
                                     <img src="{{ $employee->photo ? asset('storage/app/public/' . $employee->photo) : asset('public/images/default-photo.png') }}"
@@ -117,7 +118,6 @@
                                 <td>{{ $employee->area }}</td>
                                 <td>{{ $employee->cell }}</td>
                                 <td>{{ $employee->idpass }}</td>
-                                <td>{{ $employee->phone }}</td>
                                 <td>{{ \Carbon\Carbon::parse($employee->datein)->format('d-m-Y') }}</td>
                                 @if ($employee->dateout)
                                     <td>{{ \Carbon\Carbon::parse($employee->dateout)->format('d-m-Y') }}</td>
@@ -157,7 +157,8 @@
                                                 method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    onclick="confirmDelete(event)">Hapus</button>
                                             </form>
                                         @endauth
                                     </div>
