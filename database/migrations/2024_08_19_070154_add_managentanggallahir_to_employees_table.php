@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->string('manager_id')->nullable()->after('nik');
             $table->date('tanggallahir')->nullable()->after('name');
 
             // Menambahkan foreign key untuk manager_id jika diperlukan
-            $table->foreign('manager_id')->references('nik')->on('employees')->onDelete('set null');
         });
     }
 
@@ -26,8 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dropForeign(['manager_id']);
-            $table->dropColumn(['manager_id', 'tanggallahir']);
+            $table->dropColumn('tanggallahir');
         });
     }
 };

@@ -36,6 +36,20 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Route to delete a specific training
     Route::delete('/trainings/{id}', [TrainingController::class, 'destroy'])->name('trainings.destroy');
+    Route::get('trainings/export/data', [TrainingController::class, 'export'])->name('trainings.export');
+    Route::get('/training/form', [TrainingController::class, 'trainingForm'])->name('trainings.form');
+    Route::post('trainings/import/data', [TrainingController::class, 'import'])->name('trainings.import');
+    
+    Route::resource('gedung', GedungController::class);
+    Route::get('/import', [GedungController::class, 'formImport'])->name('gedung.import');
+    Route::post('gedung/import/data', [GedungController::class, 'import'])->name('gedung.importData');
+    Route::get('/areas/{building}', [EmployeeController::class, 'getAreas'])->name('areas.get');
+    
+    // Routes for import functionality
+    Route::get('/import-form', [ImportController::class, 'showImportForm'])->name('import.form');
+    Route::post('/import', [ImportController::class, 'import'])->name('import.process');
+    
+    Route::resource('absences', AbsenceController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
 });
 
 // Route for displaying employee details
@@ -45,18 +59,6 @@ Route::get('/employees/{nik}', [EmployeeController::class, 'show'])->name('emplo
 Route::get('/export', [EmployeeController::class, 'export'])->name('employees.export');
 
 // Routes for managing training data
-Route::get('trainings/export/data', [TrainingController::class, 'export'])->name('trainings.export');
-Route::get('/training/form', [TrainingController::class, 'trainingForm'])->name('trainings.form');
-Route::post('trainings/import/data', [TrainingController::class, 'import'])->name('trainings.import');
-
-Route::resource('gedung', GedungController::class);
-Route::get('/import', [GedungController::class, 'formImport'])->name('gedung.import');
-Route::post('gedung/import/data', [GedungController::class, 'import'])->name('gedung.importData');
-Route::get('/areas/{building}', [EmployeeController::class, 'getAreas'])->name('areas.get');
-
-// Routes for import functionality
-Route::get('/import-form', [ImportController::class, 'showImportForm'])->name('import.form');
-Route::post('/import', [ImportController::class, 'import'])->name('import.process');
 
 // Route for filtering employees based on position
 Route::get('/employees/', [EmployeeController::class, 'filter'])->name('employees.filter');
@@ -93,7 +95,6 @@ Route::get('/sto', [STOController::class, 'index'])->name('sto.index');
 
 Route::get('/sto/{building}', [StoController::class, 'viewBuilding'])->name('building.view');
 
-Route::resource('absences', AbsenceController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
 
 
 

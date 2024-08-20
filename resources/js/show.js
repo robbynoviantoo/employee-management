@@ -25,6 +25,9 @@ function createContent(data, format) {
             if (item.key === "datein" && value) {
                 value = formatDate(value);
             }
+            if (item.key === "tanggallahir" && value) {
+                value = formatDate(value);
+            }
 
             // Tambahkan elemen gambar jika key adalah "photo"
             if (item.key === "photo" && value) {

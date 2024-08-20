@@ -75,6 +75,10 @@
                             <td>Cuti</td>
                             <td>{{ $leaveCount }}</td>
                         </tr>
+                        <tr>
+                            <td>Ijin</td>
+                            <td>{{ $ijinCount }}</td>
+                        </tr>
                     </table>
 
                     <!-- Dropdown untuk memilih kategori -->

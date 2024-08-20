@@ -162,9 +162,13 @@ class TrainingController extends Controller
                              ->where('alasan', 'Cuti')
                              ->whereYear('tanggal', $year)
                              ->count();
+        $ijinCount = Absence::where('nik', $employee->nik)
+                             ->where('alasan', 'Ijin')
+                             ->whereYear('tanggal', $year)
+                             ->count();
     
         // Kirim data ke tampilan
-        return view('trainings.show', compact('employee', 'trainingData', 'materis', 'categories', 'sickCount', 'alphaCount', 'leaveCount'));
+        return view('trainings.show', compact('employee', 'trainingData', 'materis', 'categories', 'sickCount', 'alphaCount', 'leaveCount','ijinCount'));
     }
     
     

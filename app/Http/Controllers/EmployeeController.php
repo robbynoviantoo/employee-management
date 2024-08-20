@@ -122,7 +122,6 @@ class EmployeeController extends Controller
 
         $validatedData = $request->validate([
             'nik' => 'required',
-            'manager_id' => 'nullable',
             'name' => 'required',
             'tanggallahir' => 'nullable|date',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048',
@@ -181,7 +180,6 @@ class EmployeeController extends Controller
         // Validasi data input
         $request->validate([
             'nik' => 'required|numeric',
-            'manager_id' => 'nullable|numeric',
             'name' => 'required|string|max:255',
             'tanggallahir' => 'nullable|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048',
@@ -201,7 +199,7 @@ class EmployeeController extends Controller
     
         // Perbarui data karyawan
         $employee->fill($request->only([
-            'nik', 'manager_id', 'name','tanggallahir', 'position', 'building', 'area', 'cell', 'phone', 'idpass', 'datein', 'dateout', 'status'
+            'nik', 'name','tanggallahir', 'position', 'building', 'area', 'cell', 'phone', 'idpass', 'datein', 'dateout', 'status'
         ]));
     
         // Tangani file gambar jika ada

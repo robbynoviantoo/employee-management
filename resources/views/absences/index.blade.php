@@ -50,10 +50,12 @@
         <button type="submit" class="btn btn-primary">Simpan Absensi</button>
     </form>
 
-    <h2>Daftar Karyawan Tidak Hadir</h2>
+    <hr>
+    <h2 class="mt-3">Daftar Karyawan Tidak Hadir</h2>
     <table id="absences-table" class="table table-striped">
         <thead>
             <tr>
+                <th>Tanggal</th>
                 <th>NIK</th>
                 <th>Nama</th>
                 <th>Alasan</th>
@@ -64,6 +66,7 @@
         <tbody>
             @foreach ($absences as $absence)
                 <tr>
+                    <td>{{ \Carbon\Carbon::parse($absence->tanggal)->format('d-m-Y') }}</td>
                     <td>{{ $absence->nik }}</td>
                     <td>{{ $absence->employee->name }}</td> <!-- Menggunakan relasi employee untuk mengambil nama -->
                     <td>{{ $absence->alasan }}</td>

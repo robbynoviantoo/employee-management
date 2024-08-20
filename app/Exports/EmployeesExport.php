@@ -13,7 +13,7 @@ class EmployeesExport implements FromCollection, WithHeadings, WithMapping, With
 {
     public function collection()
     {
-        return Employee::select('nik','manager_id','name','tanggallahir','gender','photo','position','building','area','cell','idpass','phone','datein','dateout','status')->get();
+        return Employee::select('nik','name','tanggallahir','gender','photo','position','building','area','cell','idpass','phone','datein','dateout','status')->get();
     }
 
     public function headings(): array
@@ -21,7 +21,6 @@ class EmployeesExport implements FromCollection, WithHeadings, WithMapping, With
         return [
             'No',
             'nik',
-            'manager_id',
             'name',
             'tanggallahir',
             'gender',
@@ -45,7 +44,6 @@ class EmployeesExport implements FromCollection, WithHeadings, WithMapping, With
         return [
             $number++,
             $employee->nik,
-            $employee->manager_id,  // Jika ingin menggunakan kolom manager_id, ganti 'nik' menjadi 'manager_id'
             $employee->name,
             $employee->tanggallahir,  // Jika ingin menggunakan kolom tanggallahir, ganti 'tanggallahir' menjadi 'tanggal_lahir'
             $employee->gender, 

@@ -139,6 +139,7 @@
                                                 {"label": "Photo", "key": "photo"},
                                                 {"label": "NIK", "key": "nik"},
                                                 {"label": "Nama", "key": "name"},
+                                                {"label": "Tanggal Lahir", "key": "tanggallahir"},
                                                 {"label": "Gender", "key": "gender"},
                                                 {"label": "Jabatan", "key": "position"},
                                                 {"label": "Gedung", "key": "building"},

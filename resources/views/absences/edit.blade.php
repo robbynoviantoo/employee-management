@@ -38,6 +38,7 @@
                 <option value="Sakit" {{ $absence->alasan == 'Sakit' ? 'selected' : '' }}>Sakit</option>
                 <option value="Alpha" {{ $absence->alasan == 'Alpha' ? 'selected' : '' }}>Alpha</option>
                 <option value="Cuti" {{ $absence->alasan == 'Cuti' ? 'selected' : '' }}>Cuti</option>
+                <option value="Ijin" {{ $absence->alasan == 'Ijin' ? 'selected' : '' }}>Ijin</option>
             </select>
         </div>
         
