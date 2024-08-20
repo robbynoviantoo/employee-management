@@ -20,11 +20,6 @@
                             value="{{ old('nik', $employee->nik) }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="manager_id">Manager ID:</label>
-                        <input type="text" class="form-control" name="manager_id" id="manager_id"
-                            value="{{ old('manager_id', $employee->manager_id) }}" nullable>
-                    </div>
-                    <div class="form-group">
                         <label for="name">Nama:</label>
                         <input type="text" class="form-control" name="name" id="name"
                             value="{{ old('name', $employee->name) }}" required>
