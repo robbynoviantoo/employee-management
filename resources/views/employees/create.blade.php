@@ -131,7 +131,7 @@
                     areaSelect.style.display = 'block';
                     areaNotification.style.display = 'none';
 
-                    fetch(`http://10.20.100.70/employee-management/areas/${building}`)
+                    fetch(`http://10.20.10.44/employee-management/areas/${building}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');

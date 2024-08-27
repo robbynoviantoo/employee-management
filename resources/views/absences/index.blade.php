@@ -42,6 +42,7 @@
             <select class="form-control" id="alasan" name="alasan" required>
                 <option value="" disabled selected>Pilih Alasan</option>
                 <option value="Sakit">Sakit</option>
+                <option value="Ijin">Ijin</option>
                 <option value="Alpha">Alpha</option>
                 <option value="Cuti">Cuti</option>
             </select>
