@@ -14,10 +14,14 @@
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
 
     <form action="{{ route('absences.store') }}" method="POST">
         @csrf
+        <div class="mb-3">
+            <label for="tanggal" class="form-label">Tanggal</label> <!-- Ubah "Keterangan" menjadi "Tanggal" -->
+            <input type="date" class="form-control" id="tanggal" name="tanggal">
+        </div>
         <div class="form-group">
             <label for="nik">NIK</label>
             <select id="nik" name="nik" class="form-control @error('nik') is-invalid @enderror" required>
@@ -90,7 +94,8 @@
     // Inisialisasi Select2 pada dropdown NIK
     $('#nik').select2({
         placeholder: 'Pilih NIK',
-        allowClear: true
+        allowClear: true,
+        width: '100%' // Memastikan lebar Select2 adalah 100% dari elemen induknya
     });
 });
 </script>

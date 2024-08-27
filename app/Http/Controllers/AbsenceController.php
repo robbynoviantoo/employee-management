@@ -10,7 +10,9 @@ class AbsenceController extends Controller
 {
     public function index()
     {
-        $absences = Absence::with('employee')->whereDate('tanggal', now()->toDateString())->get();
+        $absences = Absence::with('employee')
+        ->whereYear('tanggal', now()->year)
+        ->get();
         $employees = Employee::all(); // Ambil semua data karyawan
 
         return view('absences.index', compact('absences', 'employees'));
@@ -19,13 +21,14 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'tanggal' => 'required|date',
             'nik' => 'required|string|exists:employees,nik',
             'alasan' => 'nullable|string',
             'keterangan' => 'nullable|string',
         ]);
 
         Absence::create([
-            'tanggal' => now()->toDateString(),
+            'tanggal' => $request->tanggal,
             'nik' => $request->nik,
             'alasan' => $request->alasan,
             'keterangan' => $request->keterangan,
@@ -44,6 +47,7 @@ class AbsenceController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'tanggal' => 'required|date',
             'nik' => 'required',
             'alasan' => 'required',
             'keterangan' => 'nullable|string',
