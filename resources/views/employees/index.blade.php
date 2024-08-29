@@ -146,7 +146,9 @@
                                                 {"label": "Area", "key": "area"},
                                                 {"label": "Cell", "key": "cell"},
                                                 {"label": "ID Pass", "key": "idpass"},
+                                                @auth
                                                 {"label": "No.Handphone", "key": "phone"},
+                                                @endauth
                                                 {"label": "Tanggal Masuk", "key": "datein"},
                                                 {"label": "Tanggal Resign", "key": "dateout"},
                                                 {"label": "Status", "key": "status"}]'>Lihat</a>

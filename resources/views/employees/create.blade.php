@@ -31,7 +31,13 @@
                                 <div class="form-group">
                                     <label for="name" class="form-label">Nama</label>
                                     <input type="text" class="form-control" name="name" id="name"
-                                        value="{{ old('name') }}" placeholder="Masukkan nama" required>
+                                        value="{{ old('name') }}" placeholder="Masukkan nama" required
+                                        oninput="this.value = this.value.toUpperCase();">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggallahir" class="form-label">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" name="tanggallahir" id="tanggallahir"
+                                        value="{{ old('tanggallahir') }}" placeholder="Masukkan nama" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="gender" class="form-label">Jenis Kelamin</label>

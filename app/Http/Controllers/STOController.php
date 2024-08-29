@@ -11,7 +11,7 @@ class StoController extends Controller
     public function index()
     {
         // Define and sort buildings alphabetically
-        $buildings = ['Incoming', 'Office', 'B', 'C', 'A', 'Inhouse', 'Bottom'];
+        $buildings = ['Incoming', 'Office', 'B', 'C', 'A', 'Inhouse', 'Bottom','Inspect'];
         sort($buildings); // Sort buildings alphabetically
 
         $employeeCounts = [];
@@ -49,7 +49,7 @@ class StoController extends Controller
     public function viewBuilding($building)
     {
         // Validate that the building is valid
-        $validBuildings = ['Incoming', 'Office', 'B', 'C', 'A', 'Inhouse', 'Bottom'];
+        $validBuildings = ['Incoming', 'Office', 'B', 'C', 'A', 'Inhouse', 'Bottom','Inspect'];
         if (!in_array($building, $validBuildings)) {
             abort(404); // Building not found
         }

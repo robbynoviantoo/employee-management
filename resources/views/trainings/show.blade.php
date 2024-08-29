@@ -23,7 +23,7 @@
                         <img src="{{ asset('storage/app/public/' . $employee->photo) }}" alt="Foto {{ $employee->nik }}"
                             class="img-fluid img-thumbnail custom-img">
                     @else
-                        <img src="{{ asset('images/default-avatar.png') }}" alt="Foto {{ $employee->nik }}"
+                        <img src="{{ asset('public/images/default-photo.png') }}" alt="Foto {{ $employee->nik }}"
                             class="img-fluid img-thumbnail custom-img">
                     @endif
                 </div>
@@ -48,7 +48,7 @@
                         </tr>
                         <tr>
                             <td>Tanggal Masuk</td>
-                            <td class="space-before-colon">: {{ $employee->datein }}</td>
+                            <td class="space-before-colon">: {{ \Carbon\Carbon::parse($employee->datein)->format('d-m-Y') }}</td>
                         </tr>
                         <tr>
                             <td>ID Pass</td>

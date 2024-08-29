@@ -67,7 +67,7 @@ $(document).on("click", ".btn-info", function (e) {
             var phone = data.phone || ""; // Sesuaikan dengan field yang sesuai
 
             // Buat URL WhatsApp dengan nomor telepon
-            var whatsappUrl = `https://wa.me/${phone}?text=Hello, I need help with the details`;
+            var whatsappUrl = `https://wa.me/${phone}?text=Permisi,`;
 
             var content = createContent(data, format);
 
