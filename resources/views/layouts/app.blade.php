@@ -135,7 +135,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container custom-container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" style="padding-left: 13px" href="{{ url('/') }}">
                     QIP TEAM
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -158,9 +158,9 @@
                         <li class="nav-item text-center">
                             <a class="btn" href="{{ route('trainings.index') }}">{{ __('Data Training') }}</a>
                         </li>
-                        <li class="nav-item text-center">
+                        {{-- <li class="nav-item text-center">
                             <a class="btn" href="{{ route('gedung.index') }}">{{ __('Data Gedung') }}</a>
-                        </li>
+                        </li> --}}
                         
                         <!-- Authentication Links -->
                         @guest

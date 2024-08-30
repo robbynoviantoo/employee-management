@@ -3,7 +3,31 @@
 @section('title', 'Tambah Data Training')
 
 @section('content')
-    <div class="container" style="padding: 30px; background-color:#fff; margin-top: 30px; margin-bottom: 30px; border-radius: 30px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+    <style>
+        .select2-container--default .select2-selection--single {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 40px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 40px;
+            top: 0;
+        }
+
+        .select2-container--default .select2-dropdown {
+            max-height: 300px;
+        }
+
+        .select2-container--default .select2-results__option {
+            line-height: 30px;
+        }
+    </style>
+    <div class="container"
+        style="padding: 30px; background-color:#fff; margin-top: 30px; margin-bottom: 30px; border-radius: 30px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
         <h1 class="mb-4">Tambah Data Training</h1>
         <form action="{{ route('trainings.store') }}" method="POST">
             @csrf
@@ -86,31 +110,31 @@
 
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Inisialisasi Select2 pada dropdown NIK
-    $('#nik').select2({
-        placeholder: 'Pilih NIK',
-        allowClear: true
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi Select2 pada dropdown NIK
+            $('#nik').select2({
+                placeholder: 'Pilih NIK',
+                allowClear: true
+            });
 
-    // Panggil fungsi filterMateri saat halaman dimuat pertama kali
-    filterMateri(); 
-});
+            // Panggil fungsi filterMateri saat halaman dimuat pertama kali
+            filterMateri();
+        });
 
-function filterMateri() {
-    const selectedKategori = document.getElementById('kategori').value;
-    const materiItems = document.querySelectorAll('.materi-item');
+        function filterMateri() {
+            const selectedKategori = document.getElementById('kategori').value;
+            const materiItems = document.querySelectorAll('.materi-item');
 
-    materiItems.forEach(item => {
-        if (selectedKategori === "" || item.getAttribute('data-kategori') === selectedKategori) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
+            materiItems.forEach(item => {
+                if (selectedKategori === "" || item.getAttribute('data-kategori') === selectedKategori) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
-    });
-}
 
-// Event listener untuk dropdown kategori
-document.getElementById('kategori').addEventListener('change', filterMateri);
+        // Event listener untuk dropdown kategori
+        document.getElementById('kategori').addEventListener('change', filterMateri);
     </script>
 @endsection
