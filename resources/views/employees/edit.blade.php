@@ -94,6 +94,7 @@
                         <select class="form-control" name="status" id="status" required>
                             <option value="On Work" {{ old('status', $employee->status) == 'On Work' ? 'selected' : '' }}>On Work</option>
                             <option value="Resigned" {{ old('status', $employee->status) == 'Resigned' ? 'selected' : '' }}>Resigned</option>
+                            <option value="Mutation" {{ old('status', $employee->status) == 'Mutation' ? 'selected' : '' }}>Mutation</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Update</button>

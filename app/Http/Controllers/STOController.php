@@ -11,11 +11,11 @@ class StoController extends Controller
     public function index()
     {
         // Define and sort buildings alphabetically
-        $buildings = ['Incoming', 'Office', 'B', 'C', 'A', 'Inhouse', 'Bottom','Inspect'];
+        $buildings = ['Incoming', 'Office', 'B', 'C', 'A', 'Inhouse', 'Bottom', 'Inspect'];
         sort($buildings); // Sort buildings alphabetically
-
+    
         $employeeCounts = [];
-
+    
         $positionOrder = [
             'MANAGER',
             'AST. MANAGER',
@@ -25,14 +25,15 @@ class StoController extends Controller
             'STAFF',
             'OPERATOR'
         ];
-
+    
         foreach ($buildings as $building) {
             $employeeCounts[$building] = Employee::where('building', $building)
+                ->where('status', 'On Work') // Filter by status "On Work"
                 ->select('position', DB::raw('count(*) as total'))
                 ->groupBy('position')
                 ->pluck('total', 'position')
                 ->toArray();
-
+    
             // Sort the positions according to the predefined order and filter out zero counts
             $sortedEmployeeCounts = [];
             foreach ($positionOrder as $position) {
@@ -42,7 +43,7 @@ class StoController extends Controller
             }
             $employeeCounts[$building] = $sortedEmployeeCounts;
         }
-
+    
         return view('sto.index', compact('employeeCounts', 'buildings', 'positionOrder'));
     }
 
@@ -57,7 +58,9 @@ class StoController extends Controller
         // Fetch detailed information about the building, excluding resigned employees
         $employees = Employee::where('building', $building)
             ->where('status', '!=', 'Resigned') // Exclude resigned employees
+            ->where('status','On Work') // Filter by status "On Work";
             ->get();
+            
     
         // Define the position order for sorting
         $positionOrder = [

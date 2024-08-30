@@ -61,7 +61,7 @@
         <div class="section-table mb-5">
             <div class="d-flex flex-column flex-md-row justify-content-between mb-3">
                 <form action="{{ route('employees.filter') }}" method="GET" class="d-flex mb-2 mb-md-0 align-items-center">
-                    <select id="position-filter" name="position" class="form-control" style="width: auto; margin-right: 10px;">
+                    <select id="position-filter" name="position" class="form-select" style="width: auto; margin-right: 10px;">
                         <option value="all">All Jabatan</option>
                         @foreach ($positions as $position)
                             <option value="{{ $position }}" {{ old('position', $currentPosition) == $position ? 'selected' : '' }}>
