@@ -24,7 +24,7 @@
             border-radius: 10px !important;
             padding: 10px;
             width: 180px;
-            height: 260px; /* Slightly wider for better image fit */
+            height: 320px; /* Slightly wider for better image fit */
             display: flex;
             flex-direction: column;
             align-items: center; /* Center items horizontally */
@@ -103,6 +103,11 @@
                     <div class="card-wrapper">
                         @foreach ($positionEmployees as $employee)
                             <div class="card">
+                                <div class="card-content">
+                                    <div class="card-title">
+                                        {{ $employee->cell }}
+                                    </div>
+                                </div>
                                 <a href="{{ route('trainings.show', ['id' => $employee->nik]) }}">
                                     <img src="{{ $employee->photo ? asset('storage/app/public/' . $employee->photo) : asset('public/images/default-photo.png') }}">
                                 </a>

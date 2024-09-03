@@ -49,7 +49,7 @@
 
             <div class="form-group mt-4">
                 <label for="kategori">Kategori Materi</label>
-                <select id="kategori" name="kategori" class="form-control @error('kategori') is-invalid @enderror"
+                <select id="kategori" name="kategori" class="form-select @error('kategori') is-invalid @enderror"
                     onchange="filterMateri()">
                     <option value="">Semua Kategori</option>
                     @foreach ($kategoriList as $kategori)

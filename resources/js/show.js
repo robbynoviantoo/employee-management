@@ -25,6 +25,9 @@ function createContent(data, format) {
             if (item.key === "datein" && value) {
                 value = formatDate(value);
             }
+            if (item.key === "dateout" && value) {
+                value = formatDate(value);
+            }
             if (item.key === "tanggallahir" && value) {
                 value = formatDate(value);
             }
