@@ -43,9 +43,11 @@
             <form action="{{ route('absences.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label> <!-- Ubah "Keterangan" menjadi "Tanggal" -->
-                    <input type="date" class="form-control" id="tanggal" name="tanggal">
+                    <label for="tanggal" class="form-label">Tanggal</label>
+                    <input type="date" class="form-control" id="tanggal" name="tanggal"
+                        value="{{ old('tanggal', \Carbon\Carbon::now()->format('Y-m-d')) }}">
                 </div>
+
                 <div class="form-group">
                     <label for="nik">NIK</label>
                     <select id="nik" name="nik" class="form-control @error('nik') is-invalid @enderror" required>
@@ -63,7 +65,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="alasan" class="form-label">Alasan</label>
-                    <select class="form-control" id="alasan" name="alasan" required>
+                    <select class="form-select" id="alasan" name="alasan" required>
                         <option value="" disabled selected>Pilih Alasan</option>
                         <option value="Sakit">Sakit</option>
                         <option value="Ijin">Ijin</option>
