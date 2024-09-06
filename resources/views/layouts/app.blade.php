@@ -17,32 +17,32 @@
             text-align: center;
         }
 
-            /* CSS untuk menambahkan ikon anak panah ke dropdown */
-    .custom-select {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
+        /* CSS untuk menambahkan ikon anak panah ke dropdown */
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
 
-    .custom-select select {
-        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMDAgMTQiIHZpZXdCb3g9IjAgMCAxMDAgMTQiIHdpZ2Q9IjEwMCIgaGVpZ2h0PSIxNCI+PHBhdGggZD0iTTAgMCA2IDYuOTc5bDIuOTc5IDYuOTc5LTEuMDIgMy40MjktMS4wMTIgMy40MjktMS4wMTIgNy43OTctNy43OTcgNi45NzkiIHN0cm9rZS13aWR0aD0iMnB4IiBzdHJva2UtZGFzaGFycmF5PSJyb3VuZCIgc3Ryb2tlLWxpbmVjY2hhcnJhPSJyb3VuZCIgc3Ryb2tlLW1vZGU9InJvdyIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2Utb3BhY2l0eT0iLjgiIHN0cm9rZS1saW5lY2hhcnJhPSJyb3VuZCIgc3Ryb2tlLXN0eWxlPSJub25lIi8+PC9zdmc+');
-        background-position: right 0.7em center;
-        background-repeat: no-repeat;
-        background-size: 0.65em auto;
-        border: 1px solid #ccc;
-        border-radius: 0.25rem;
-        padding: 0.5em 2.5em 0.5em 0.5em;
-        font-size: 1em;
-        line-height: 1.2;
-        color: #333;
-        width: 100%;
-        box-sizing: border-box;
-    }
+        .custom-select select {
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMDAgMTQiIHZpZXdCb3g9IjAgMCAxMDAgMTQiIHdpZ2Q9IjEwMCIgaGVpZ2h0PSIxNCI+PHBhdGggZD0iTTAgMCA2IDYuOTc5bDIuOTc5IDYuOTc5LTEuMDIgMy40MjktMS4wMTIgMy40MjktMS4wMTIgNy43OTctNy43OTcgNi45NzkiIHN0cm9rZS13aWR0aD0iMnB4IiBzdHJva2UtZGFzaGFycmF5PSJyb3VuZCIgc3Ryb2tlLWxpbmVjY2hhcnJhPSJyb3VuZCIgc3Ryb2tlLW1vZGU9InJvdyIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2Utb3BhY2l0eT0iLjgiIHN0cm9rZS1saW5lY2hhcnJhPSJyb3VuZCIgc3Ryb2tlLXN0eWxlPSJub25lIi8+PC9zdmc+');
+            background-position: right 0.7em center;
+            background-repeat: no-repeat;
+            background-size: 0.65em auto;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            padding: 0.5em 2.5em 0.5em 0.5em;
+            font-size: 1em;
+            line-height: 1.2;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-    .custom-select select:focus {
-        border-color: #007bff;
-        outline: none;
-    }
+        .custom-select select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
 
         .center-content {
             display: flex;
@@ -114,8 +114,8 @@
             font-weight: bold;
             font-size: 20px
         }
-        
-        .form-label{
+
+        .form-label {
             font-weight: bold;
             font-size: 18px;
         }
@@ -143,9 +143,9 @@
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-        
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Tautan Data Training ditampilkan untuk semua pengguna -->
@@ -161,7 +161,7 @@
                         {{-- <li class="nav-item text-center">
                             <a class="btn" href="{{ route('gedung.index') }}">{{ __('Data Gedung') }}</a>
                         </li> --}}
-                        
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -178,17 +178,18 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ Auth::user()->name }}
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ Auth::user()->name }}
                                 </a>
-        
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-        
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
@@ -198,7 +199,7 @@
                 </div>
             </div>
         </nav>
-        
+
         @if (session('success'))
             <div class="alert">
                 {{ session('success') }}
@@ -235,7 +236,11 @@
             $('#trainingsTable').DataTable();
         });
         $(document).ready(function() {
-            $('#absences-table').DataTable();
+            $('#absences-table').DataTable({
+                "order": [
+                    [0, "desc"]
+                ] // Mengatur kolom pertama (indeks 0) diurutkan secara descending
+            });
         });
 
         setTimeout(function() {

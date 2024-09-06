@@ -98,7 +98,7 @@
                 <tbody>
                     @foreach ($absences as $absence)
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($absence->tanggal)->format('d-m-Y') }}</td>
+                            <td>{{ $absence->tanggal }}</td>
                             <td>{{ $absence->nik }}</td>
                             <td>{{ $absence->employee->name }}</td>
                             <!-- Menggunakan relasi employee untuk mengambil nama -->

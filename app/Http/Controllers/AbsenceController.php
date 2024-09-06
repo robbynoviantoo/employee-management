@@ -10,13 +10,18 @@ class AbsenceController extends Controller
 {
     public function index()
     {
+        // Mengurutkan absensi berdasarkan tanggal terbaru (desc) dan filter tahun berjalan
         $absences = Absence::with('employee')
-        ->whereYear('tanggal', now()->year)
-        ->get();
-        $employees = Employee::all(); // Ambil semua data karyawan
+            ->whereYear('tanggal', now()->year)
+            ->orderBy('tanggal', 'desc') // Urutkan berdasarkan tanggal terbaru
+            ->get();
+
+        // Ambil semua data karyawan untuk dropdown NIK
+        $employees = Employee::all();
 
         return view('absences.index', compact('absences', 'employees'));
     }
+
 
     public function store(Request $request)
     {
